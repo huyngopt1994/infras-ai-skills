@@ -78,6 +78,7 @@ install_skill() {
 install_skill "terraform"
 install_skill "terragrunt"
 install_skill "helm"
+install_skill "k8s-doctor"
 install_skill "github-actions"
 install_skill "github"
 

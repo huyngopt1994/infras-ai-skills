@@ -14,11 +14,12 @@ The operating model is simple:
 - repeated validation should become scripts, not just prose
 - each shipped skill should have an example or another concrete reuse path when the domain has a stable baseline
 
-This repo currently ships five skills:
+This repo currently ships six skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
 - `helm`: scaffold, review, validate, and harden Helm charts, values, templates, and Kubernetes workload defaults
+- `k8s-doctor`: troubleshoot Kubernetes runtime, Service, endpoint, ingress, and route issues with read-only-first investigation flows
 - `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
 - `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
 
@@ -38,6 +39,7 @@ In practice that means:
 - `github` also now pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
 - `terraform` and `terragrunt` continue to focus on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
 - `helm` now emphasizes reusable helpers, stable selectors, standard labels, deliberate requests and limits, probes, and safer workload chart defaults
+- `k8s-doctor` now emphasizes read-only-first cluster investigation, explicit `-n <namespace>` usage, and bottom-up traffic tracing from Pod to Service to EndpointSlice to HTTPRoute or Ingress
 
 The repo also now standardizes a lightweight contribution contract: each shipped skill should have a clear trigger, a reusable example when applicable, and a validation path when deterministic local checks are realistic.
 
@@ -49,7 +51,7 @@ Across the full skill pack, the goal is consistent:
 
 ## Purpose
 
-The intended long-term scope of this repo is broader than the current five skills. It is meant to become a focused infrastructure skills pack covering areas such as:
+The intended long-term scope of this repo is broader than the current six skills. It is meant to become a focused infrastructure skills pack covering areas such as:
 
 - IaC
 - Helm
@@ -82,6 +84,7 @@ The structure intentionally supports two installation styles:
         ├── terraform/SKILL.md
         ├── terragrunt/SKILL.md
         ├── helm/SKILL.md
+        ├── k8s-doctor/SKILL.md
         ├── github-actions/SKILL.md
         └── github/SKILL.md
 ```
@@ -97,6 +100,7 @@ mkdir -p ~/.agents/skills
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/terraform" ~/.agents/skills/terraform
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/helm" ~/.agents/skills/helm
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/k8s-doctor" ~/.agents/skills/k8s-doctor
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github" ~/.agents/skills/github
 ```
@@ -149,6 +153,7 @@ mkdir -p ~/.config/opencode/skills
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -181,6 +186,7 @@ mkdir -p ~/.config/opencode/skills
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -197,6 +203,7 @@ bash scripts/install-opencode-skills.sh --global
 ls ~/.config/opencode/skills/terraform
 ls ~/.config/opencode/skills/terragrunt
 ls ~/.config/opencode/skills/helm
+ls ~/.config/opencode/skills/k8s-doctor
 ls ~/.config/opencode/skills/github-actions
 ls ~/.config/opencode/skills/github
 ```
@@ -206,6 +213,7 @@ ls ~/.config/opencode/skills/github
 - `Use terraform to review this module before I open a PR.`
 - `Use terragrunt to scaffold a new environment under infra/live/apac-prod.`
 - `Use helm to review this chart for labels, probes, and request/limit defaults.`
+- `Use k8s-doctor to trace why requests reach the ingress but not the backend Pod in namespace payments.`
 
 If the device blocks symlinks, copy the skill folders instead:
 
@@ -214,6 +222,7 @@ mkdir -p ~/.config/opencode/skills
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -225,6 +234,7 @@ mkdir -p .opencode/skills
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" .opencode/skills/terraform
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" .opencode/skills/helm
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" .opencode/skills/k8s-doctor
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" .opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" .opencode/skills/github
 ```
@@ -258,6 +268,8 @@ Example prompts:
 - `Validate this Terragrunt stack and explain the broken dependency wiring.`
 - `Use helm to scaffold a reusable chart for a web app with ingress, probes, and resource sizing values.`
 - `Use helm to review this chart for selector stability, labels, and Kubernetes-safe defaults.`
+- `Use k8s-doctor to trace a 503 from the Pod through Service, EndpointSlice, and HTTPRoute in namespace payments.`
+- `Use k8s-doctor to investigate whether NetworkPolicy or ResourceQuota is why this workload never becomes Ready.`
 - `Use github-actions to review this CI workflow for unsafe token permissions and flaky execution patterns.`
 - `Use github to add CODEOWNERS and a pull request template for this repository.`
 - `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
@@ -284,6 +296,8 @@ Better prompts:
 - `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
 - `Use helm to review ./charts/api for upgrade risk, helper reuse, label consistency, and safe request/limit defaults.`
 - `Use helm to refactor ./charts/web so shared labels and names come from _helpers.tpl instead of copy-pasted templates.`
+- `Use k8s-doctor to inspect why ./payments is healthy at the Pod level but the Service still has no endpoints in namespace payments.`
+- `Use k8s-doctor to trace traffic bottom-up from Pod to Service to Ingress and ask before any exec or port-forward step.`
 - `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions, concurrency, and safer deploy guards.`
 - `Use github-actions to replace repeated job setup across .github/workflows/ with a reusable workflow or composite action.`
 - `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
@@ -294,6 +308,7 @@ When prompting for new infrastructure, include your required labels/tags if your
 - `Use terraform to scaffold an AWS module and always include labels project, environment, owner, managed_by, and cost_center.`
 - `Use terragrunt to create a live layout and propagate labels project, environment, owner, and cost_center into module inputs.`
 - `Use helm to add app.kubernetes.io labels plus explicit CPU and memory requests and limits for each workload container.`
+- `Use k8s-doctor with read-only commands first and keep every namespaced check explicit with -n payments.`
 
 ## Bundled Helpers
 
@@ -304,6 +319,8 @@ OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 - Terragrunt validator helper: `infras-ai-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
 - Helm validator helper: `infras-ai-skills-plugin/skills/helm/scripts/validate_helm.sh`
 - Helm skill: `infras-ai-skills-plugin/skills/helm/SKILL.md`
+- Kubernetes debug skill: `infras-ai-skills-plugin/skills/k8s-doctor/SKILL.md`
+- Kubernetes debug helper: `infras-ai-skills-plugin/skills/k8s-doctor/scripts/collect_pod_debug.sh`
 - Helm example baseline: `infras-ai-skills-plugin/skills/helm/examples/minimal-web-app/`
 - Terraform example baseline: `infras-ai-skills-plugin/skills/terraform/examples/minimal-module/`
 - Terragrunt example baseline: `infras-ai-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
@@ -323,12 +340,13 @@ If you use these skills, the expected default posture is:
 - use reusable workflows or composite actions when pipelines start repeating themselves
 - keep IaC inputs, outputs, and dependencies readable at the module boundary
 - keep Helm charts reviewable, with stable selectors, standard labels, and deliberate workload defaults
+- keep Kubernetes troubleshooting read-only first, explicit about namespace scope, and evidence-driven from Pod to route
 - keep repository ownership clear for CI, release, infrastructure, and policy files
 - keep contributor process documented once, then referenced from templates instead of copied everywhere
 
 ## Current Scope
 
-This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
+This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, Kubernetes debugging, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
 
 ## Future Deliverables
 
