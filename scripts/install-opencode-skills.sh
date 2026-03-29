@@ -55,7 +55,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SOURCE_DIR="${REPO_ROOT}/terraform-terragrunt-skills-plugin/skills"
+SOURCE_DIR="${REPO_ROOT}/infras-ai-skills-plugin/skills"
 
 mkdir -p "${TARGET_DIR}"
 

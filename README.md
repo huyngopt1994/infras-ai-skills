@@ -1,24 +1,27 @@
 # Infras AI Skills
 
-Terraform and Terragrunt skills packaged for:
+Infrastructure, IaC, and CI/CD skills packaged for:
 
 - Codex
 - Claude Code
 - OpenCode
 
+This repo is built to capture practical infrastructure engineering guidance from real delivery experience and established industry best practices. The goal is not just to generate files faster, but to raise the quality bar for infrastructure components and delivery pipelines so they are more secure, maintainable, DRY, and production-ready.
+
 This repo currently ships four skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
-- `github-actions`: create, review, and troubleshoot GitHub Actions workflows, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
-- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations
+- `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
+- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
 
 ## What Changed
 
-The GitHub-related skills now explicitly push two themes instead of leaving them implicit:
+The current skills explicitly push a few themes instead of leaving them implicit:
 
-- security-first defaults for Actions and repository governance
-- DRY repository patterns so workflow and contributor guidance does not drift across files
+- security-first defaults for infrastructure and delivery workflows
+- DRY patterns so infrastructure logic, CI/CD workflows, and contributor guidance do not drift across files
+- maintainability and reviewability over fast but brittle generation
 
 In practice that means:
 
@@ -26,11 +29,35 @@ In practice that means:
 - `github-actions` also now steers repeated CI/CD logic toward reusable workflows or composite actions instead of copy-pasting setup, permissions, and cache blocks
 - `github` now emphasizes explicit ownership for CI, release, infra, and policy paths, plus stronger merge-control guidance for higher-risk repositories
 - `github` also now pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
+- `terraform` and `terragrunt` continue to focus on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
+
+Across the full skill pack, the goal is consistent:
+
+- apply best practices from real infrastructure delivery work
+- align outputs with common industry safety and maintainability standards
+- improve the quality bar for infrastructure components, not just make them syntactically valid
+
+## Purpose
+
+The intended long-term scope of this repo is broader than the current four skills. It is meant to become a focused infrastructure skills pack covering areas such as:
+
+- IaC
+- Helm
+- Kubernetes
+- CI/CD
+- delivery and repository hygiene that supports infrastructure quality
+
+The common standard across all of them is the same:
+
+- practical patterns that teams actually use in production
+- strong defaults around security and change safety
+- DRY, modular structure instead of repetitive configuration
+- outputs that are easy to review, evolve, and operate
 
 The structure intentionally supports two installation styles:
 
-- direct skill discovery from `terraform-terragrunt-skills-plugin/skills/` for Codex and OpenCode
-- plugin-style installation from `terraform-terragrunt-skills-plugin/` for Claude Code and Codex desktop plugin flows
+- direct skill discovery from `infras-ai-skills-plugin/skills/` for Codex and OpenCode
+- plugin-style installation from `infras-ai-skills-plugin/` for Claude Code and Codex desktop plugin flows
 
 ## Repo Layout
 
@@ -38,7 +65,7 @@ The structure intentionally supports two installation styles:
 .
 ├── README.md
 ├── scripts/
-└── terraform-terragrunt-skills-plugin/
+└── infras-ai-skills-plugin/
     ├── .claude-plugin/plugin.json
     ├── .codex-plugin/plugin.json
     └── skills/
@@ -56,17 +83,17 @@ Direct repo usage:
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/terraform" ~/.agents/skills/terraform
-ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
-ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
-ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/github" ~/.agents/skills/github
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/terraform" ~/.agents/skills/terraform
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/github" ~/.agents/skills/github
 ```
 
 Plugin-style packaging:
 
 ```bash
 mkdir -p ~/plugins ~/.agents/plugins
-ln -s "$(pwd)/terraform-terragrunt-skills-plugin" ~/plugins/terraform-terragrunt-skills
+ln -s "$(pwd)/infras-ai-skills-plugin" ~/plugins/infras-ai-skills
 ```
 
 Then add or merge this entry into `~/.agents/plugins/marketplace.json`:
@@ -79,10 +106,10 @@ Then add or merge this entry into `~/.agents/plugins/marketplace.json`:
   },
   "plugins": [
     {
-      "name": "terraform-terragrunt-skills",
+      "name": "infras-ai-skills",
       "source": {
         "source": "local",
-        "path": "./plugins/terraform-terragrunt-skills"
+        "path": "./plugins/infras-ai-skills"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -96,7 +123,7 @@ Then add or merge this entry into `~/.agents/plugins/marketplace.json`:
 
 ### Claude Code
 
-Clone the repo, then register the local marketplace by linking or copying the root `.claude-plugin/marketplace.json` into your Claude plugin setup. The packaged plugin lives at `terraform-terragrunt-skills-plugin/`.
+Clone the repo, then register the local marketplace by linking or copying the root `.claude-plugin/marketplace.json` into your Claude plugin setup. The packaged plugin lives at `infras-ai-skills-plugin/`.
 
 If you already maintain a Claude marketplace file, merge this plugin entry instead of replacing your existing configuration.
 
@@ -107,10 +134,10 @@ OpenCode can load Claude-compatible or agent-compatible skill folders. The simpl
 ```bash
 REPO_ROOT="$(pwd)"
 mkdir -p ~/.config/opencode/skills
-ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
 You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or any equivalent agent skill directory your tool supports.
@@ -138,10 +165,10 @@ cd ~/workspace/infras-ai-skills
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
 Or run:
@@ -168,20 +195,20 @@ If the device blocks symlinks, copy the skill folders instead:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
 For company repos, project-local install is often safer than global install:
 
 ```bash
 mkdir -p .opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" .opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" .opencode/skills/github-actions
-cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" .opencode/skills/github
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" .opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" .opencode/skills/github-actions
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" .opencode/skills/github
 ```
 
 Installer version:
@@ -211,7 +238,7 @@ Example prompts:
 - `Review this Terraform directory with terraform and list only high-risk findings.`
 - `Use terragrunt to create a dev/staging/prod layout with a shared root.hcl and per-environment inputs.`
 - `Validate this Terragrunt stack and explain the broken dependency wiring.`
-- `Use github-actions to review this workflow for unsafe token permissions and flaky execution patterns.`
+- `Use github-actions to review this CI workflow for unsafe token permissions and flaky execution patterns.`
 - `Use github to add CODEOWNERS and a pull request template for this repository.`
 - `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
 - `Use github to clean up duplicated contributor instructions and move the shared process into CONTRIBUTING.md.`
@@ -250,24 +277,26 @@ When prompting for new infrastructure, include your required labels/tags if your
 OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 
 - installer: `scripts/install-opencode-skills.sh`
-- Terraform validator helper: `terraform-terragrunt-skills-plugin/skills/terraform/scripts/validate_terraform.sh`
-- Terragrunt validator helper: `terraform-terragrunt-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
-- Terraform example baseline: `terraform-terragrunt-skills-plugin/skills/terraform/examples/minimal-module/`
-- Terragrunt example baseline: `terraform-terragrunt-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
-- GitHub Actions example baseline: `terraform-terragrunt-skills-plugin/skills/github-actions/examples/basic-ci.yml`
-- GitHub repository examples: `terraform-terragrunt-skills-plugin/skills/github/examples/`
+- Terraform validator helper: `infras-ai-skills-plugin/skills/terraform/scripts/validate_terraform.sh`
+- Terragrunt validator helper: `infras-ai-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
+- Terraform example baseline: `infras-ai-skills-plugin/skills/terraform/examples/minimal-module/`
+- Terragrunt example baseline: `infras-ai-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
+- GitHub Actions example baseline: `infras-ai-skills-plugin/skills/github-actions/examples/basic-ci.yml`
+- GitHub repository examples: `infras-ai-skills-plugin/skills/github/examples/`
 
-## GitHub Guidance
+## Quality Bar
 
-If you use the GitHub-related skills, the expected default posture is:
+If you use these skills, the expected default posture is:
 
+- keep infrastructure and delivery contracts explicit
 - keep Actions permissions minimal and explicit
 - avoid exposing secrets to untrusted pull request execution
 - prefer immutable or clearly versioned action references
 - use reusable workflows or composite actions when pipelines start repeating themselves
+- keep IaC inputs, outputs, and dependencies readable at the module boundary
 - keep repository ownership clear for CI, release, infrastructure, and policy files
 - keep contributor process documented once, then referenced from templates instead of copied everywhere
 
 ## Current Scope
 
-This is still a focused skill pack. The current scope is Terraform, Terragrunt, GitHub Actions, and GitHub repository hygiene. Additional platform skills can be added later without changing the packaging model.
+This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially Helm, Kubernetes, and more general CI/CD skills, without changing the packaging model.
