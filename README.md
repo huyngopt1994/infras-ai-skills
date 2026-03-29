@@ -8,10 +8,17 @@ Infrastructure, IaC, and CI/CD skills packaged for:
 
 This repo is built to capture practical infrastructure engineering guidance from real delivery experience and established industry best practices. The goal is not just to generate files faster, but to raise the quality bar for infrastructure components and delivery pipelines so they are more secure, maintainable, DRY, and production-ready.
 
-This repo currently ships four skills:
+The operating model is simple:
+
+- skills should be installable in small, reusable units
+- repeated validation should become scripts, not just prose
+- each shipped skill should have an example or another concrete reuse path when the domain has a stable baseline
+
+This repo currently ships five skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
+- `helm`: scaffold, review, validate, and harden Helm charts, values, templates, and Kubernetes workload defaults
 - `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
 - `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
 
@@ -30,6 +37,9 @@ In practice that means:
 - `github` now emphasizes explicit ownership for CI, release, infra, and policy paths, plus stronger merge-control guidance for higher-risk repositories
 - `github` also now pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
 - `terraform` and `terragrunt` continue to focus on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
+- `helm` now emphasizes reusable helpers, stable selectors, standard labels, deliberate requests and limits, probes, and safer workload chart defaults
+
+The repo also now standardizes a lightweight contribution contract: each shipped skill should have a clear trigger, a reusable example when applicable, and a validation path when deterministic local checks are realistic.
 
 Across the full skill pack, the goal is consistent:
 
@@ -39,7 +49,7 @@ Across the full skill pack, the goal is consistent:
 
 ## Purpose
 
-The intended long-term scope of this repo is broader than the current four skills. It is meant to become a focused infrastructure skills pack covering areas such as:
+The intended long-term scope of this repo is broader than the current five skills. It is meant to become a focused infrastructure skills pack covering areas such as:
 
 - IaC
 - Helm
@@ -71,6 +81,7 @@ The structure intentionally supports two installation styles:
     └── skills/
         ├── terraform/SKILL.md
         ├── terragrunt/SKILL.md
+        ├── helm/SKILL.md
         ├── github-actions/SKILL.md
         └── github/SKILL.md
 ```
@@ -85,6 +96,7 @@ Direct repo usage:
 mkdir -p ~/.agents/skills
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/terraform" ~/.agents/skills/terraform
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/helm" ~/.agents/skills/helm
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github" ~/.agents/skills/github
 ```
@@ -136,6 +148,7 @@ REPO_ROOT="$(pwd)"
 mkdir -p ~/.config/opencode/skills
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -167,6 +180,7 @@ cd ~/workspace/infras-ai-skills
 mkdir -p ~/.config/opencode/skills
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -182,6 +196,7 @@ bash scripts/install-opencode-skills.sh --global
 ```bash
 ls ~/.config/opencode/skills/terraform
 ls ~/.config/opencode/skills/terragrunt
+ls ~/.config/opencode/skills/helm
 ls ~/.config/opencode/skills/github-actions
 ls ~/.config/opencode/skills/github
 ```
@@ -190,6 +205,7 @@ ls ~/.config/opencode/skills/github
 
 - `Use terraform to review this module before I open a PR.`
 - `Use terragrunt to scaffold a new environment under infra/live/apac-prod.`
+- `Use helm to review this chart for labels, probes, and request/limit defaults.`
 
 If the device blocks symlinks, copy the skill folders instead:
 
@@ -197,6 +213,7 @@ If the device blocks symlinks, copy the skill folders instead:
 mkdir -p ~/.config/opencode/skills
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
@@ -207,6 +224,7 @@ For company repos, project-local install is often safer than global install:
 mkdir -p .opencode/skills
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" .opencode/skills/terraform
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" .opencode/skills/helm
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" .opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" .opencode/skills/github
 ```
@@ -238,6 +256,8 @@ Example prompts:
 - `Review this Terraform directory with terraform and list only high-risk findings.`
 - `Use terragrunt to create a dev/staging/prod layout with a shared root.hcl and per-environment inputs.`
 - `Validate this Terragrunt stack and explain the broken dependency wiring.`
+- `Use helm to scaffold a reusable chart for a web app with ingress, probes, and resource sizing values.`
+- `Use helm to review this chart for selector stability, labels, and Kubernetes-safe defaults.`
 - `Use github-actions to review this CI workflow for unsafe token permissions and flaky execution patterns.`
 - `Use github to add CODEOWNERS and a pull request template for this repository.`
 - `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
@@ -262,6 +282,8 @@ Better prompts:
 - `Use terragrunt to design a root.hcl plus dev/staging/prod layout for AWS accounts split by environment.`
 - `Use terragrunt to debug why ./infra/live/prod/app cannot read dependency outputs from ./infra/live/prod/vpc.`
 - `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
+- `Use helm to review ./charts/api for upgrade risk, helper reuse, label consistency, and safe request/limit defaults.`
+- `Use helm to refactor ./charts/web so shared labels and names come from _helpers.tpl instead of copy-pasted templates.`
 - `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions, concurrency, and safer deploy guards.`
 - `Use github-actions to replace repeated job setup across .github/workflows/ with a reusable workflow or composite action.`
 - `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
@@ -271,6 +293,7 @@ When prompting for new infrastructure, include your required labels/tags if your
 
 - `Use terraform to scaffold an AWS module and always include labels project, environment, owner, managed_by, and cost_center.`
 - `Use terragrunt to create a live layout and propagate labels project, environment, owner, and cost_center into module inputs.`
+- `Use helm to add app.kubernetes.io labels plus explicit CPU and memory requests and limits for each workload container.`
 
 ## Bundled Helpers
 
@@ -279,10 +302,15 @@ OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 - installer: `scripts/install-opencode-skills.sh`
 - Terraform validator helper: `infras-ai-skills-plugin/skills/terraform/scripts/validate_terraform.sh`
 - Terragrunt validator helper: `infras-ai-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
+- Helm validator helper: `infras-ai-skills-plugin/skills/helm/scripts/validate_helm.sh`
+- Helm skill: `infras-ai-skills-plugin/skills/helm/SKILL.md`
+- Helm example baseline: `infras-ai-skills-plugin/skills/helm/examples/minimal-web-app/`
 - Terraform example baseline: `infras-ai-skills-plugin/skills/terraform/examples/minimal-module/`
 - Terragrunt example baseline: `infras-ai-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
 - GitHub Actions example baseline: `infras-ai-skills-plugin/skills/github-actions/examples/basic-ci.yml`
 - GitHub repository examples: `infras-ai-skills-plugin/skills/github/examples/`
+
+See `CONTRIBUTING.md` for the minimum bar for adding or evolving skills in this repo.
 
 ## Quality Bar
 
@@ -294,9 +322,22 @@ If you use these skills, the expected default posture is:
 - prefer immutable or clearly versioned action references
 - use reusable workflows or composite actions when pipelines start repeating themselves
 - keep IaC inputs, outputs, and dependencies readable at the module boundary
+- keep Helm charts reviewable, with stable selectors, standard labels, and deliberate workload defaults
 - keep repository ownership clear for CI, release, infrastructure, and policy files
 - keep contributor process documented once, then referenced from templates instead of copied everywhere
 
 ## Current Scope
 
-This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially Helm, Kubernetes, and more general CI/CD skills, without changing the packaging model.
+This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
+
+## Future Deliverables
+
+The next expansion area is Kubernetes depth around the existing Helm foundation. The target direction is practical skills that help teams ship and operate workloads safely, not a giant generic Kubernetes encyclopedia.
+
+The likely delivery path is:
+
+- stronger Helm chart generation and validation coverage
+- Kubernetes manifest authoring and review skills beyond Helm
+- workload debugging and rollout troubleshooting skills
+- policy, security, and platform guardrail skills
+- packaging patterns that keep examples and validation helpers reusable as the Kubernetes surface grows
