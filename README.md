@@ -1,4 +1,4 @@
-# AI Platform Skills
+# Infras AI Skills
 
 Terraform and Terragrunt skills packaged for:
 
@@ -10,8 +10,22 @@ This repo currently ships four skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
-- `github-actions`: create, review, and troubleshoot GitHub Actions workflows and reusable workflows
-- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, and contributor guidance
+- `github-actions`: create, review, and troubleshoot GitHub Actions workflows, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
+- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations
+
+## What Changed
+
+The GitHub-related skills now explicitly push two themes instead of leaving them implicit:
+
+- security-first defaults for Actions and repository governance
+- DRY repository patterns so workflow and contributor guidance does not drift across files
+
+In practice that means:
+
+- `github-actions` now calls out minimal `GITHUB_TOKEN` permissions, safer secret handling, immutable action references for higher-risk workflows, OIDC preference, and review checks for unsafe `pull_request_target` usage
+- `github-actions` also now steers repeated CI/CD logic toward reusable workflows or composite actions instead of copy-pasting setup, permissions, and cache blocks
+- `github` now emphasizes explicit ownership for CI, release, infra, and policy paths, plus stronger merge-control guidance for higher-risk repositories
+- `github` also now pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
 
 The structure intentionally supports two installation styles:
 
@@ -199,6 +213,8 @@ Example prompts:
 - `Validate this Terragrunt stack and explain the broken dependency wiring.`
 - `Use github-actions to review this workflow for unsafe token permissions and flaky execution patterns.`
 - `Use github to add CODEOWNERS and a pull request template for this repository.`
+- `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
+- `Use github to clean up duplicated contributor instructions and move the shared process into CONTRIBUTING.md.`
 
 ## Practical Usage Notes
 
@@ -220,7 +236,9 @@ Better prompts:
 - `Use terragrunt to debug why ./infra/live/prod/app cannot read dependency outputs from ./infra/live/prod/vpc.`
 - `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
 - `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions, concurrency, and safer deploy guards.`
+- `Use github-actions to replace repeated job setup across .github/workflows/ with a reusable workflow or composite action.`
 - `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
+- `Use github to review whether this repo duplicates process across README, PR templates, and CONTRIBUTING.md, then simplify it.`
 
 When prompting for new infrastructure, include your required labels/tags if your company enforces them:
 
@@ -238,6 +256,17 @@ OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 - Terragrunt example baseline: `terraform-terragrunt-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
 - GitHub Actions example baseline: `terraform-terragrunt-skills-plugin/skills/github-actions/examples/basic-ci.yml`
 - GitHub repository examples: `terraform-terragrunt-skills-plugin/skills/github/examples/`
+
+## GitHub Guidance
+
+If you use the GitHub-related skills, the expected default posture is:
+
+- keep Actions permissions minimal and explicit
+- avoid exposing secrets to untrusted pull request execution
+- prefer immutable or clearly versioned action references
+- use reusable workflows or composite actions when pipelines start repeating themselves
+- keep repository ownership clear for CI, release, infrastructure, and policy files
+- keep contributor process documented once, then referenced from templates instead of copied everywhere
 
 ## Current Scope
 
