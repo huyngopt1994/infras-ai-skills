@@ -37,6 +37,7 @@
       "Use terraform to scaffold a reusable module.",
       "Review this Terraform directory for risky issues.",
       "Use helm to scaffold or review a Kubernetes chart with safer defaults.",
+      "Use k8s-doctor to trace a workload issue from Pod to Service to route using read-only checks first.",
       "Use terragrunt to design a multi-environment layout.",
       "Use github-actions to review this CI workflow for permission and fork-safety issues.",
       "Use github to standardize repository ownership and delivery guidance.",
