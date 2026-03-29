@@ -87,9 +87,10 @@ If you already maintain a Claude marketplace file, merge this plugin entry inste
 OpenCode can load Claude-compatible or agent-compatible skill folders. The simplest option is to symlink the repo skills into one of its supported locations:
 
 ```bash
+REPO_ROOT="$(pwd)"
 mkdir -p ~/.config/opencode/skills
-ln -s "$(pwd)/.agents/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$(pwd)/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$REPO_ROOT/.agents/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$REPO_ROOT/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 ```
 
 You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or `.agents/skills/`.
@@ -100,25 +101,25 @@ Or use the installer script:
 bash scripts/install-opencode-skills.sh --global
 ```
 
-### OpenCode On Another Company Device
+### OpenCode On Another Machine
 
-If you use OpenCode on multiple laptops or on a company-managed machine, keep this repo as the source of truth and install from it on each device.
+If you use OpenCode on multiple laptops or a managed workstation, keep this repo as the source of truth and install from it on each device.
 
 Recommended setup:
 
 1. Clone the repo on that machine:
 
 ```bash
-git clone https://github.com/huyngo/ai-platform-skills.git ~/workspace/ai-platform-skills
-cd ~/workspace/ai-platform-skills
+git clone https://github.com/<your-org>/infras-ai-skills.git ~/workspace/infras-ai-skills
+cd ~/workspace/infras-ai-skills
 ```
 
 2. Link the skills into OpenCode's global skill directory:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-ln -s ~/workspace/ai-platform-skills/.agents/skills/terraform ~/.config/opencode/skills/terraform
-ln -s ~/workspace/ai-platform-skills/.agents/skills/terragrunt ~/.config/opencode/skills/terragrunt
+ln -s "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 ```
 
 Or run:
@@ -143,22 +144,22 @@ If the device blocks symlinks, copy the skill folders instead:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-cp -R ~/workspace/ai-platform-skills/.agents/skills/terraform ~/.config/opencode/skills/terraform
-cp -R ~/workspace/ai-platform-skills/.agents/skills/terragrunt ~/.config/opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" ~/.config/opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
 ```
 
 For company repos, project-local install is often safer than global install:
 
 ```bash
 mkdir -p .opencode/skills
-cp -R ~/workspace/ai-platform-skills/.agents/skills/terraform .opencode/skills/terraform
-cp -R ~/workspace/ai-platform-skills/.agents/skills/terragrunt .opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" .opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" .opencode/skills/terragrunt
 ```
 
 Installer version:
 
 ```bash
-bash ~/workspace/ai-platform-skills/scripts/install-opencode-skills.sh --project .
+bash "$HOME/workspace/infras-ai-skills/scripts/install-opencode-skills.sh" --project .
 ```
 
 That keeps the exact skill version with the repository instead of depending on one workstation's global config.
@@ -168,7 +169,7 @@ That keeps the exact skill version with the repository instead of depending on o
 Update each cloned copy with:
 
 ```bash
-cd ~/workspace/ai-platform-skills
+cd ~/workspace/infras-ai-skills
 git pull
 ```
 
@@ -201,6 +202,7 @@ Better prompts:
 - `Use terraform to review ./infra/live/prod for security and destructive-change risk.`
 - `Use terragrunt to design a root.hcl plus dev/staging/prod layout for AWS accounts split by environment.`
 - `Use terragrunt to debug why ./infra/live/prod/app cannot read dependency outputs from ./infra/live/prod/vpc.`
+- `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
 
 When prompting for new infrastructure, include your required labels/tags if your company enforces them:
 
@@ -215,7 +217,7 @@ OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 - Terraform validator helper: `.agents/skills/terraform/scripts/validate_terraform.sh`
 - Terragrunt validator helper: `.agents/skills/terragrunt/scripts/validate_terragrunt.sh`
 - Terraform example baseline: `.agents/skills/terraform/examples/minimal-module/`
-- Terragrunt example baseline: `.agents/skills/terragrunt/examples/live-aws/`
+- Terragrunt example baseline: `.agents/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
 
 ## Current Scope
 

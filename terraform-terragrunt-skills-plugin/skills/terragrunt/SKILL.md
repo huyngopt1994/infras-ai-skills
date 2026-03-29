@@ -11,6 +11,7 @@ Use this skill when the user is working on Terragrunt layouts, `root.hcl`, `terr
 
 - Scaffold clean Terragrunt folder structures for single or multiple environments
 - Fix broken includes, locals, dependencies, and input propagation
+- Model upstream/downstream module contracts with `dependency` blocks and safe mock outputs
 - Review Terragrunt layouts for maintainability and execution safety
 - Explain how Terragrunt coordinates Terraform or OpenTofu modules
 
@@ -45,11 +46,13 @@ Use this skill when the user is working on Terragrunt layouts, `root.hcl`, `terr
 - Keep remote state generation consistent across environments.
 - Use `include` and shared locals to remove duplication, not to hide important inputs.
 - Use `dependency` blocks only where data flow is real and ordering matters.
+- Prefer `dependency` over copy-pasting IDs or CIDRs across units when one module already owns that output.
+- Add `mock_outputs` only for commands that need them, such as `validate`, and keep the mocked shape aligned with the real Terraform outputs.
 - Keep `inputs` explicit at the edge of each unit so module contracts stay readable.
 - Avoid brittle path logic when a simpler structure would work.
 - When stacks are used, keep units and shared conventions predictable.
 - Prefer passing shared labels through `inputs` so Terraform modules can tag resources consistently.
-- Reuse `examples/live-aws/` when the user wants a standard multi-environment baseline.
+- Reuse `examples/live-aws/` when the user wants a standard multi-environment baseline, including a simple `app -> vpc` dependency pattern.
 
 ## Review Priorities
 
