@@ -6,30 +6,32 @@ Terraform and Terragrunt skills packaged for:
 - Claude Code
 - OpenCode
 
-This repo starts with two infrastructure skills:
+This repo currently ships four skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
+- `github-actions`: create, review, and troubleshoot GitHub Actions workflows and reusable workflows
+- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, and contributor guidance
 
 The structure intentionally supports two installation styles:
 
-- direct skill discovery from `.agents/skills/` for Codex and OpenCode
+- direct skill discovery from `terraform-terragrunt-skills-plugin/skills/` for Codex and OpenCode
 - plugin-style installation from `terraform-terragrunt-skills-plugin/` for Claude Code and Codex desktop plugin flows
 
 ## Repo Layout
 
 ```text
 .
-├── .agents/skills/
-│   ├── terraform/SKILL.md
-│   └── terragrunt/SKILL.md
-├── .claude-plugin/marketplace.json
+├── README.md
+├── scripts/
 └── terraform-terragrunt-skills-plugin/
     ├── .claude-plugin/plugin.json
     ├── .codex-plugin/plugin.json
     └── skills/
         ├── terraform/SKILL.md
-        └── terragrunt/SKILL.md
+        ├── terragrunt/SKILL.md
+        ├── github-actions/SKILL.md
+        └── github/SKILL.md
 ```
 
 ## Install
@@ -40,8 +42,10 @@ Direct repo usage:
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -s "$(pwd)/.agents/skills/terraform" ~/.agents/skills/terraform
-ln -s "$(pwd)/.agents/skills/terragrunt" ~/.agents/skills/terragrunt
+ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/terraform" ~/.agents/skills/terraform
+ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
+ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
+ln -s "$(pwd)/terraform-terragrunt-skills-plugin/skills/github" ~/.agents/skills/github
 ```
 
 Plugin-style packaging:
@@ -89,11 +93,13 @@ OpenCode can load Claude-compatible or agent-compatible skill folders. The simpl
 ```bash
 REPO_ROOT="$(pwd)"
 mkdir -p ~/.config/opencode/skills
-ln -s "$REPO_ROOT/.agents/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$REPO_ROOT/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+ln -s "$REPO_ROOT/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
-You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or `.agents/skills/`.
+You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or any equivalent agent skill directory your tool supports.
 
 Or use the installer script:
 
@@ -118,8 +124,10 @@ cd ~/workspace/infras-ai-skills
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-ln -s "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+ln -s "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
 Or run:
@@ -133,6 +141,8 @@ bash scripts/install-opencode-skills.sh --global
 ```bash
 ls ~/.config/opencode/skills/terraform
 ls ~/.config/opencode/skills/terragrunt
+ls ~/.config/opencode/skills/github-actions
+ls ~/.config/opencode/skills/github
 ```
 
 4. Use the skill name directly in prompts:
@@ -144,16 +154,20 @@ If the device blocks symlinks, copy the skill folders instead:
 
 ```bash
 mkdir -p ~/.config/opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" ~/.config/opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" ~/.config/opencode/skills/github
 ```
 
 For company repos, project-local install is often safer than global install:
 
 ```bash
 mkdir -p .opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terraform" .opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/.agents/skills/terragrunt" .opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terraform" .opencode/skills/terraform
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github-actions" .opencode/skills/github-actions
+cp -R "$HOME/workspace/infras-ai-skills/terraform-terragrunt-skills-plugin/skills/github" .opencode/skills/github
 ```
 
 Installer version:
@@ -183,6 +197,8 @@ Example prompts:
 - `Review this Terraform directory with terraform and list only high-risk findings.`
 - `Use terragrunt to create a dev/staging/prod layout with a shared root.hcl and per-environment inputs.`
 - `Validate this Terragrunt stack and explain the broken dependency wiring.`
+- `Use github-actions to review this workflow for unsafe token permissions and flaky execution patterns.`
+- `Use github to add CODEOWNERS and a pull request template for this repository.`
 
 ## Practical Usage Notes
 
@@ -203,6 +219,8 @@ Better prompts:
 - `Use terragrunt to design a root.hcl plus dev/staging/prod layout for AWS accounts split by environment.`
 - `Use terragrunt to debug why ./infra/live/prod/app cannot read dependency outputs from ./infra/live/prod/vpc.`
 - `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
+- `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions, concurrency, and safer deploy guards.`
+- `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
 
 When prompting for new infrastructure, include your required labels/tags if your company enforces them:
 
@@ -214,11 +232,13 @@ When prompting for new infrastructure, include your required labels/tags if your
 OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 
 - installer: `scripts/install-opencode-skills.sh`
-- Terraform validator helper: `.agents/skills/terraform/scripts/validate_terraform.sh`
-- Terragrunt validator helper: `.agents/skills/terragrunt/scripts/validate_terragrunt.sh`
-- Terraform example baseline: `.agents/skills/terraform/examples/minimal-module/`
-- Terragrunt example baseline: `.agents/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
+- Terraform validator helper: `terraform-terragrunt-skills-plugin/skills/terraform/scripts/validate_terraform.sh`
+- Terragrunt validator helper: `terraform-terragrunt-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
+- Terraform example baseline: `terraform-terragrunt-skills-plugin/skills/terraform/examples/minimal-module/`
+- Terragrunt example baseline: `terraform-terragrunt-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
+- GitHub Actions example baseline: `terraform-terragrunt-skills-plugin/skills/github-actions/examples/basic-ci.yml`
+- GitHub repository examples: `terraform-terragrunt-skills-plugin/skills/github/examples/`
 
 ## Current Scope
 
-This is the first cut. The repo currently focuses on authoring and review workflows for Terraform and Terragrunt only. Additional platform skills can be added later without changing the packaging model.
+This is still a focused skill pack. The current scope is Terraform, Terragrunt, GitHub Actions, and GitHub repository hygiene. Additional platform skills can be added later without changing the packaging model.

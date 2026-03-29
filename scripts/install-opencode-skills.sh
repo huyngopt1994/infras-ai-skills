@@ -55,7 +55,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SOURCE_DIR="${REPO_ROOT}/.agents/skills"
+SOURCE_DIR="${REPO_ROOT}/terraform-terragrunt-skills-plugin/skills"
 
 mkdir -p "${TARGET_DIR}"
 
@@ -77,6 +77,8 @@ install_skill() {
 
 install_skill "terraform"
 install_skill "terragrunt"
+install_skill "github-actions"
+install_skill "github"
 
 echo
 echo "Install complete: ${TARGET_DIR}"
