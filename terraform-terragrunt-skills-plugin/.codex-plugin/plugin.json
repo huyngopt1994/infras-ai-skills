@@ -1,0 +1,36 @@
+{
+  "name": "terraform-terragrunt-skills",
+  "version": "0.1.0",
+  "description": "Terraform and Terragrunt skills for Codex and Claude Code.",
+  "author": {
+    "name": "Huy Ngo",
+    "url": "https://github.com/huyngo"
+  },
+  "homepage": "https://github.com/huyngo/ai-platform-skills",
+  "repository": "https://github.com/huyngo/ai-platform-skills.git",
+  "license": "UNLICENSED",
+  "keywords": [
+    "terraform",
+    "terragrunt",
+    "iac",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Terraform Terragrunt Skills",
+    "shortDescription": "IaC skill pack for Terraform and Terragrunt work.",
+    "longDescription": "Reusable Terraform and Terragrunt skills for infrastructure authoring, review, validation, and troubleshooting.",
+    "developerName": "Huy Ngo",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/huyngo/ai-platform-skills",
+    "defaultPrompt": [
+      "Use terraform to scaffold a reusable module.",
+      "Review this Terraform directory for risky issues.",
+      "Use terragrunt to design a multi-environment layout."
+    ]
+  }
+}
