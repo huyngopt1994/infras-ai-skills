@@ -14,7 +14,7 @@ The operating model is simple:
 - repeated validation should become scripts, not just prose
 - each shipped skill should have an example or another concrete reuse path when the domain has a stable baseline
 
-This repo currently ships six skills:
+This repo currently ships seven skills:
 
 - `terraform`: generate, review, validate, and harden Terraform modules and stacks
 - `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
@@ -22,6 +22,7 @@ This repo currently ships six skills:
 - `k8s-doctor`: troubleshoot Kubernetes runtime, Service, endpoint, ingress, and route issues with read-only-first investigation flows
 - `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
 - `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
+- `infra-auditor`: perform Infrastructure Review & DevOps Auditor checks that tie IaC, CI/CD, reliability, and application-security controls back to AWS/Azure/GCP well-architected pillars and the OWASP Top 10.
 
 ### Operational Notes
 
@@ -31,6 +32,7 @@ This repo currently ships six skills:
 - When reviewing GitHub changes, use `gh` to fetch PR branches and leave context-rich review comments with clear evidence.
 - Keep IAM scopes for AWS and GCP resources as least-privilege as possible.
 - Always run the repository's formatter or `pre-commit` hooks if they are configured before finalizing work.
+- Call out OWASP Top 10 categories when audits surface application-facing or ingress security risks.
 
 ## What Changed
 
@@ -49,6 +51,7 @@ In practice that means:
 - `terraform` and `terragrunt` continue to focus on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
 - `helm` now emphasizes reusable helpers, stable selectors, standard labels, deliberate requests and limits, probes, and safer workload chart defaults
 - `k8s-doctor` now emphasizes read-only-first cluster investigation, explicit `-n <namespace>` usage, and bottom-up traffic tracing from Pod to Service to EndpointSlice to HTTPRoute or Ingress
+- `infra-auditor` now provides end-to-end infrastructure and DevOps audits that cite AWS/Azure/GCP well-architected pillars, Google SRE practices, and OWASP Top 10 exposure when delivering findings
 
 The repo also now standardizes a lightweight contribution contract: each shipped skill should have a clear trigger, a reusable example when applicable, and a validation path when deterministic local checks are realistic.
 
@@ -60,7 +63,7 @@ Across the full skill pack, the goal is consistent:
 
 ## Purpose
 
-The intended long-term scope of this repo is broader than the current six skills. It is meant to become a focused infrastructure skills pack covering areas such as:
+The intended long-term scope of this repo is broader than the current seven skills. It is meant to become a focused infrastructure skills pack covering areas such as:
 
 - IaC
 - Helm
@@ -95,7 +98,8 @@ The structure intentionally supports two installation styles:
         ├── helm/SKILL.md
         ├── k8s-doctor/SKILL.md
         ├── github-actions/SKILL.md
-        └── github/SKILL.md
+        ├── github/SKILL.md
+        └── infra-auditor/SKILL.md
 ```
 
 ## Install
@@ -112,6 +116,7 @@ ln -s "$(pwd)/infras-ai-skills-plugin/skills/helm" ~/.agents/skills/helm
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/k8s-doctor" ~/.agents/skills/k8s-doctor
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
 ln -s "$(pwd)/infras-ai-skills-plugin/skills/github" ~/.agents/skills/github
+ln -s "$(pwd)/infras-ai-skills-plugin/skills/infra-auditor" ~/.agents/skills/infra-auditor
 ```
 
 Plugin-style packaging:
@@ -165,6 +170,7 @@ ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
+ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
 ```
 
 You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or any equivalent agent skill directory your tool supports.
@@ -198,6 +204,7 @@ ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
+ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
 ```
 
 Or run:
@@ -215,6 +222,7 @@ ls ~/.config/opencode/skills/helm
 ls ~/.config/opencode/skills/k8s-doctor
 ls ~/.config/opencode/skills/github-actions
 ls ~/.config/opencode/skills/github
+ls ~/.config/opencode/skills/infra-auditor
 ```
 
 4. Use the skill name directly in prompts:
@@ -223,6 +231,9 @@ ls ~/.config/opencode/skills/github
 - `Use terragrunt to scaffold a new environment under infra/live/apac-prod.`
 - `Use helm to review this chart for labels, probes, and request/limit defaults.`
 - `Use k8s-doctor to trace why requests reach the ingress but not the backend Pod in namespace payments.`
+- `Use github-actions to verify ./.github/workflows/release.yml before deploy.`
+- `Use github to refresh CODEOWNERS and CONTRIBUTING.md guidance.`
+- `Use infra-auditor to scan the repo for least-privilege IAM, CI/CD guardrails, and OWASP Top 10 exposures.`
 
 If the device blocks symlinks, copy the skill folders instead:
 
@@ -234,6 +245,7 @@ cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
 ```
 
 For company repos, project-local install is often safer than global install:
@@ -246,6 +258,7 @@ cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" .op
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" .opencode/skills/k8s-doctor
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" .opencode/skills/github-actions
 cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" .opencode/skills/github
+cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" .opencode/skills/infra-auditor
 ```
 
 Installer version:
@@ -283,6 +296,7 @@ Example prompts:
 - `Use github to add CODEOWNERS and a pull request template for this repository.`
 - `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
 - `Use github to clean up duplicated contributor instructions and move the shared process into CONTRIBUTING.md.`
+- `Use infra-auditor to review this repo's Terraform, Helm, and GitHub Actions for least privilege, reliability controls, and OWASP Top 10 risks before an audit.`
 
 ## Practical Usage Notes
 
@@ -311,6 +325,7 @@ Better prompts:
 - `Use github-actions to replace repeated job setup across .github/workflows/ with a reusable workflow or composite action.`
 - `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
 - `Use github to review whether this repo duplicates process across README, PR templates, and CONTRIBUTING.md, then simplify it.`
+- `Use infra-auditor to audit ./infra and ./.github/workflows for least-privilege IAM, release safety, and OWASP Top 10 exposure before compliance review.`
 
 When prompting for new infrastructure, include your required labels/tags if your company enforces them:
 
@@ -335,6 +350,7 @@ OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
 - Terragrunt example baseline: `infras-ai-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
 - GitHub Actions example baseline: `infras-ai-skills-plugin/skills/github-actions/examples/basic-ci.yml`
 - GitHub repository examples: `infras-ai-skills-plugin/skills/github/examples/`
+- Infrastructure audit skill: `infras-ai-skills-plugin/skills/infra-auditor/SKILL.md`
 
 See `CONTRIBUTING.md` for the minimum bar for adding or evolving skills in this repo.
 
@@ -352,10 +368,11 @@ If you use these skills, the expected default posture is:
 - keep Kubernetes troubleshooting read-only first, explicit about namespace scope, and evidence-driven from Pod to route
 - keep repository ownership clear for CI, release, infrastructure, and policy files
 - keep contributor process documented once, then referenced from templates instead of copied everywhere
+- tie infrastructure and application-security findings to OWASP Top 10 categories and cloud well-architected pillars when running infra-auditor reviews
 
 ## Current Scope
 
-This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, Kubernetes debugging, GitHub Actions, and GitHub repository hygiene. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
+This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, Kubernetes debugging, GitHub Actions, GitHub repository hygiene, and Infrastructure Review & DevOps auditing. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
 
 ## Future Deliverables
 
