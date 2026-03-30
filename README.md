@@ -104,235 +104,71 @@ The structure intentionally supports two installation styles:
 
 ## Install
 
-### Codex
+### Quick Install (recommended)
 
-Direct repo usage:
+1. Clone the repo where you keep tooling: `git clone https://github.com/<your-org>/infras-ai-skills.git ~/workspace/infras-ai-skills && cd ~/workspace/infras-ai-skills`.
+2. Run the helper script:
 
-```bash
-mkdir -p ~/.agents/skills
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/terraform" ~/.agents/skills/terraform
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/terragrunt" ~/.agents/skills/terragrunt
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/helm" ~/.agents/skills/helm
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/k8s-doctor" ~/.agents/skills/k8s-doctor
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/github-actions" ~/.agents/skills/github-actions
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/github" ~/.agents/skills/github
-ln -s "$(pwd)/infras-ai-skills-plugin/skills/infra-auditor" ~/.agents/skills/infra-auditor
-```
+   ```bash
+   bash scripts/install-opencode-skills.sh --global      # symlinks under ~/.agents/skills and ~/.config/opencode/skills
+   # or
+   bash scripts/install-opencode-skills.sh --project .   # writes .opencode/skills inside the repo
+   ```
 
-Plugin-style packaging:
+3. Enable the plugin/skill pack in Codex, Claude, or OpenCode using their standard local-plugin entry and point it at `infras-ai-skills-plugin/`.
+
+### Manual Symlink Install
 
 ```bash
-mkdir -p ~/plugins ~/.agents/plugins
-ln -s "$(pwd)/infras-ai-skills-plugin" ~/plugins/infras-ai-skills
+SKILL_ROOT="$(pwd)/infras-ai-skills-plugin/skills"
+mkdir -p ~/.agents/skills ~/.config/opencode/skills
+for skill in terraform terragrunt helm k8s-doctor github-actions github infra-auditor; do
+  ln -sf "$SKILL_ROOT/$skill" ~/.agents/skills/$skill
+  ln -sf "$SKILL_ROOT/$skill" ~/.config/opencode/skills/$skill
+done
 ```
 
-Then add or merge this entry into `~/.agents/plugins/marketplace.json`:
+Point other agents (Claude, desktop plugins, etc.) at the same directories if they expect different install paths.
 
-```json
-{
-  "name": "local-plugins",
-  "interface": {
-    "displayName": "Local Plugins"
-  },
-  "plugins": [
-    {
-      "name": "infras-ai-skills",
-      "source": {
-        "source": "local",
-        "path": "./plugins/infras-ai-skills"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
-}
-```
+### Copy-Only Environments
 
-### Claude Code
-
-Clone the repo, then register the local marketplace by linking or copying the root `.claude-plugin/marketplace.json` into your Claude plugin setup. The packaged plugin lives at `infras-ai-skills-plugin/`.
-
-If you already maintain a Claude marketplace file, merge this plugin entry instead of replacing your existing configuration.
-
-### OpenCode
-
-OpenCode can load Claude-compatible or agent-compatible skill folders. The simplest option is to symlink the repo skills into one of its supported locations:
+Some managed laptops block symlinks. After pulling the repo, copy the folders instead:
 
 ```bash
-REPO_ROOT="$(pwd)"
-mkdir -p ~/.config/opencode/skills
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
-ln -s "$REPO_ROOT/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
+SKILL_ROOT="$(pwd)/infras-ai-skills-plugin/skills"
+DEST=~/.config/opencode/skills
+mkdir -p "$DEST"
+for skill in terraform terragrunt helm k8s-doctor github-actions github infra-auditor; do
+  rm -rf "$DEST/$skill"
+  cp -R "$SKILL_ROOT/$skill" "$DEST/$skill"
+done
 ```
 
-You can also place them under project-local `.opencode/skills/`, `.claude/skills/`, or any equivalent agent skill directory your tool supports.
+Use `--project .` with the install script when you want the skills stored inside a specific repository (`.opencode/skills`) rather than globally.
 
-Or use the installer script:
+### Updating & Syncing
 
-```bash
-bash scripts/install-opencode-skills.sh --global
-```
+- If you installed via symlinks, run `git pull` inside your clone and every agent sees the latest skills immediately.
+- If you copied the folders, pull first, then rerun the install script (with the same flags) or repeat the copy loop so the destination gets the refreshed files.
+- For multi-device setups, treat this repo as the source of truth: pull new commits on each machine, then re-link or copy as needed.
 
-### OpenCode On Another Machine
+## Using The Skills
 
-If you use OpenCode on multiple laptops or a managed workstation, keep this repo as the source of truth and install from it on each device.
+- Mention the skill name in your prompt (`Use terraform …`, `Use infra-auditor …`).
+- Always include scope (path, cloud/provider, environment, action like "review" vs. "generate").
+- Keep validation steps explicit when you want the skill to run a script or command.
 
-Recommended setup:
+Sample prompts:
 
-1. Clone the repo on that machine:
-
-```bash
-git clone https://github.com/<your-org>/infras-ai-skills.git ~/workspace/infras-ai-skills
-cd ~/workspace/infras-ai-skills
-```
-
-2. Link the skills into OpenCode's global skill directory:
-
-```bash
-mkdir -p ~/.config/opencode/skills
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
-ln -s "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
-```
-
-Or run:
-
-```bash
-bash scripts/install-opencode-skills.sh --global
-```
-
-3. Verify the install:
-
-```bash
-ls ~/.config/opencode/skills/terraform
-ls ~/.config/opencode/skills/terragrunt
-ls ~/.config/opencode/skills/helm
-ls ~/.config/opencode/skills/k8s-doctor
-ls ~/.config/opencode/skills/github-actions
-ls ~/.config/opencode/skills/github
-ls ~/.config/opencode/skills/infra-auditor
-```
-
-4. Use the skill name directly in prompts:
-
-- `Use terraform to review this module before I open a PR.`
-- `Use terragrunt to scaffold a new environment under infra/live/apac-prod.`
-- `Use helm to review this chart for labels, probes, and request/limit defaults.`
-- `Use k8s-doctor to trace why requests reach the ingress but not the backend Pod in namespace payments.`
-- `Use github-actions to verify ./.github/workflows/release.yml before deploy.`
-- `Use github to refresh CODEOWNERS and CONTRIBUTING.md guidance.`
-- `Use infra-auditor to scan the repo for least-privilege IAM, CI/CD guardrails, and OWASP Top 10 exposures.`
-
-If the device blocks symlinks, copy the skill folders instead:
-
-```bash
-mkdir -p ~/.config/opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" ~/.config/opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" ~/.config/opencode/skills/terragrunt
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" ~/.config/opencode/skills/helm
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" ~/.config/opencode/skills/k8s-doctor
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" ~/.config/opencode/skills/github-actions
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" ~/.config/opencode/skills/github
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" ~/.config/opencode/skills/infra-auditor
-```
-
-For company repos, project-local install is often safer than global install:
-
-```bash
-mkdir -p .opencode/skills
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terraform" .opencode/skills/terraform
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/terragrunt" .opencode/skills/terragrunt
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/helm" .opencode/skills/helm
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/k8s-doctor" .opencode/skills/k8s-doctor
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github-actions" .opencode/skills/github-actions
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/github" .opencode/skills/github
-cp -R "$HOME/workspace/infras-ai-skills/infras-ai-skills-plugin/skills/infra-auditor" .opencode/skills/infra-auditor
-```
-
-Installer version:
-
-```bash
-bash "$HOME/workspace/infras-ai-skills/scripts/install-opencode-skills.sh" --project .
-```
-
-That keeps the exact skill version with the repository instead of depending on one workstation's global config.
-
-### Syncing Across Devices
-
-Update each cloned copy with:
-
-```bash
-cd ~/workspace/infras-ai-skills
-git pull
-```
-
-If you used symlinks, OpenCode will see the latest changes immediately after pulling. If you copied the folders, copy them again after updating.
-
-## How To Use
-
-Example prompts:
-
-- `Use terraform to scaffold a reusable AWS VPC module with variables, outputs, and validation guidance.`
-- `Review this Terraform directory with terraform and list only high-risk findings.`
-- `Use terragrunt to create a dev/staging/prod layout with a shared root.hcl and per-environment inputs.`
-- `Validate this Terragrunt stack and explain the broken dependency wiring.`
-- `Use helm to scaffold a reusable chart for a web app with ingress, probes, and resource sizing values.`
-- `Use helm to review this chart for selector stability, labels, and Kubernetes-safe defaults.`
-- `Use k8s-doctor to trace a 503 from the Pod through Service, EndpointSlice, and HTTPRoute in namespace payments.`
-- `Use k8s-doctor to investigate whether NetworkPolicy or ResourceQuota is why this workload never becomes Ready.`
-- `Use github-actions to review this CI workflow for unsafe token permissions and flaky execution patterns.`
-- `Use github to add CODEOWNERS and a pull request template for this repository.`
-- `Use github-actions to refactor duplicated CI workflows into a reusable workflow and tighten secret handling.`
-- `Use github to clean up duplicated contributor instructions and move the shared process into CONTRIBUTING.md.`
-- `Use infra-auditor to review this repo's Terraform, Helm, and GitHub Actions for least privilege, reliability controls, and OWASP Top 10 risks before an audit.`
-
-## Practical Usage Notes
-
-For OpenCode, the most reliable pattern is:
-
-1. Install the skill globally or per-project.
-2. Mention the skill by name in the prompt.
-3. Be explicit about scope:
-   - target path
-   - provider or cloud
-   - environments
-   - whether you want generation, review, or debugging
-
-Better prompts:
-
-- `Use terraform to refactor ./infra/modules/vpc into a reusable module with typed variables and safer defaults.`
-- `Use terraform to review ./infra/live/prod for security and destructive-change risk.`
-- `Use terragrunt to design a root.hcl plus dev/staging/prod layout for AWS accounts split by environment.`
-- `Use terragrunt to debug why ./infra/live/prod/app cannot read dependency outputs from ./infra/live/prod/vpc.`
-- `Use terragrunt to wire an app unit to a vpc unit with dependency blocks and validate-safe mock outputs.`
-- `Use helm to review ./charts/api for upgrade risk, helper reuse, label consistency, and safe request/limit defaults.`
-- `Use helm to refactor ./charts/web so shared labels and names come from _helpers.tpl instead of copy-pasted templates.`
-- `Use k8s-doctor to inspect why ./payments is healthy at the Pod level but the Service still has no endpoints in namespace payments.`
-- `Use k8s-doctor to trace traffic bottom-up from Pod to Service to Ingress and ask before any exec or port-forward step.`
-- `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions, concurrency, and safer deploy guards.`
-- `Use github-actions to replace repeated job setup across .github/workflows/ with a reusable workflow or composite action.`
-- `Use github to standardize this repo with CODEOWNERS, a PR template, and branch protection guidance.`
-- `Use github to review whether this repo duplicates process across README, PR templates, and CONTRIBUTING.md, then simplify it.`
+- `Use terraform to review ./infra/live/prod for destructive change risk.`
+- `Use terragrunt to build a dev/stage/prod layout with a shared root.hcl.`
+- `Use helm to refactor ./charts/web with shared helpers and safer defaults.`
+- `Use k8s-doctor to trace a 503 from ingress to Pod in namespace payments.`
+- `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions and concurrency.`
+- `Use github to add CODEOWNERS plus a concise PR template.`
 - `Use infra-auditor to audit ./infra and ./.github/workflows for least-privilege IAM, release safety, and OWASP Top 10 exposure before compliance review.`
 
-When prompting for new infrastructure, include your required labels/tags if your company enforces them:
-
-- `Use terraform to scaffold an AWS module and always include labels project, environment, owner, managed_by, and cost_center.`
-- `Use terragrunt to create a live layout and propagate labels project, environment, owner, and cost_center into module inputs.`
-- `Use helm to add app.kubernetes.io labels plus explicit CPU and memory requests and limits for each workload container.`
-- `Use k8s-doctor with read-only commands first and keep every namespaced check explicit with -n payments.`
+If your organization mandates specific labels or metadata, add that to the prompt (for example, "include labels project, environment, owner, cost_center" when generating IaC).
 
 ## Bundled Helpers
 
