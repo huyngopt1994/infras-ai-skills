@@ -52,6 +52,7 @@ Use this skill when the user is working on Terragrunt layouts, `root.hcl`, `terr
 - Avoid brittle path logic when a simpler structure would work.
 - When stacks are used, keep units and shared conventions predictable.
 - Prefer passing shared labels through `inputs` so Terraform modules can tag resources consistently.
+- Keep IAM roles, policies, and bindings least-privilege when Terragrunt passes identity configuration into modules.
 - Reuse `examples/live-aws/` when the user wants a standard multi-environment baseline, including a simple `app -> vpc` dependency pattern.
 
 ## Review Priorities
