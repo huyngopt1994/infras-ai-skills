@@ -50,6 +50,7 @@ Use this skill when the user is working on Terraform modules, stacks, providers,
 - Use `locals` for repeated naming, tagging, and derived values.
 - Standardize labels/tags across all resources in the module whenever the provider supports metadata fields.
 - Keep variable names and resource names descriptive and in `snake_case`.
+- Model IAM roles, bindings, and policies with least-privilege scopes for AWS and GCP unless the user explicitly accepts broader rights.
 - Add validation blocks for variables that have tight accepted values.
 - Avoid embedding secrets in code or example tfvars.
 - Avoid overusing `depends_on`; rely on data flow first.
@@ -65,9 +66,9 @@ When reviewing or debugging Terraform, check in this order:
 3. Provider or backend misconfiguration
 4. Destructive lifecycle or state-move risks
 5. Security gaps:
-   - open ingress
-   - missing encryption
-   - unsafe IAM permissions
+    - open ingress
+    - missing encryption
+    - unsafe IAM permissions or over-broad role bindings
    - plaintext secrets
    - public exposure by default
 6. Maintainability issues:

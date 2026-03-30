@@ -23,6 +23,15 @@ This repo currently ships six skills:
 - `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
 - `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
 
+### Operational Notes
+
+- Commits requested through these skills must only include the current change and avoid "AI" or similar phrasing in the message.
+- Pull-request descriptions should summarize the latest commit and follow `.github/pull_request_template.md` whenever the target repo has one.
+- For non-production GKE node pools, prefer enabling preemptible/Spot capacity to keep the skill's guidance cost-aware by default.
+- When reviewing GitHub changes, use `gh` to fetch PR branches and leave context-rich review comments with clear evidence.
+- Keep IAM scopes for AWS and GCP resources as least-privilege as possible.
+- Always run the repository's formatter or `pre-commit` hooks if they are configured before finalizing work.
+
 ## What Changed
 
 The current skills explicitly push a few themes instead of leaving them implicit:
@@ -359,3 +368,4 @@ The likely delivery path is:
 - workload debugging and rollout troubleshooting skills
 - policy, security, and platform guardrail skills
 - packaging patterns that keep examples and validation helpers reusable as the Kubernetes surface grows
+- a GKE node pool skill that defaults non-production pools to Spot/preemptible nodes, with clear autoscaler and taint guidance

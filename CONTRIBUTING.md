@@ -19,6 +19,14 @@ Every new skill should include:
 - Reuse examples and helper scripts instead of re-explaining the same patterns in multiple places.
 - Make skipped validation explicit when tooling, credentials, or network access are missing.
 
+## Operational Notes
+
+- Commits requested by users should include only the current change and avoid "AI" phrasing in the message.
+- Pull-request descriptions must summarize the latest commit and follow `.github/pull_request_template.md` whenever the destination repo ships one.
+- Run any repo-specific formatter, `pre-commit`, or equivalent validation hook before opening a PR.
+- Default to least-privilege IAM scopes for AWS and GCP resources referenced in examples or generated code.
+- When a skill touches GKE node pools, prefer enabling preemptible/Spot capacity for non-production clusters.
+
 ## Repo Scope
 
 Prioritize infrastructure, Kubernetes, IaC, CI/CD, and repository hygiene workflows that teams repeatedly need in practice.

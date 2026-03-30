@@ -23,6 +23,7 @@ Use this skill when the user is working on repository governance and collaborati
    - `CONTRIBUTING.md`
    - pull request and issue templates
    - release or merge automation config
+   - use `gh pr diff` / `gh pr checkout <number>` to fetch the latest PR context when reviewing remote changes
 2. Identify the operating model:
    - single maintainer
    - team-owned repository
