@@ -37,6 +37,13 @@ Use this skill when the user is working on repository governance and collaborati
 8. After editing, verify that file locations match GitHub's expected discovery paths.
 9. During code reviews, if a pull request lacks an associated ticket or clearly described impact, leave an informational comment flagging the gap and avoid issuing Approve or Request Changes—final review state stays with a human maintainer.
 
+## Output Standards
+
+- Keep every review structured with explicit **Good News** and **Bad News** callouts so maintainers get balanced signal on strengths and gaps.
+- Avoid referencing Jira or requesting Jira-specific evidence; keep discussion anchored to the GitHub context and repository docs.
+- Cite at least one GitHub or industry best practice (for example, protected branches, CODEOWNERS, CONTRIBUTING docs) when explaining why a change matters.
+- Deliver feedback through review comments only—do not mark the review as Approve or Request Changes so that a human maintainer owns the merge decision.
+
 ## Authoring Rules
 
 - Use `CODEOWNERS` when review ownership matters, and keep patterns simple enough that maintainers can reason about them.

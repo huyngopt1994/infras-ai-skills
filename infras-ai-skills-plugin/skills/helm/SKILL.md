@@ -51,6 +51,13 @@ Reuse `examples/minimal-web-app/` when the user wants a clean starter chart with
 7. If the chart renders CRDs or third-party APIs, look up the exact upstream documentation before changing templates.
 8. After editing, run the strongest local Helm and manifest validation available.
 
+## Output Standards
+
+- Lead with the current chart status (what changed or what was reviewed) before diving into file-by-file commentary so users get the headline immediately.
+- Cite the Helm or Kubernetes best practice that backs each recommendation—examples include stable selectors, standard labels, resource sizing, probe coverage, or security-context requirements.
+- Always list the validation commands executed (or why they were skipped) so maintainers understand test coverage before trusting the result.
+- When residual risks remain (upgrade drift, CRDs, missing sizing), state them explicitly along with the follow-up action required.
+
 ## Authoring Rules
 
 - Keep `Chart.yaml` metadata deliberate:
