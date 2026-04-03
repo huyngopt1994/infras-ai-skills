@@ -40,6 +40,13 @@ Use this skill when the user is working on Terragrunt layouts, `root.hcl`, `terr
    - `managed_by`
    - `cost_center` when relevant
 
+## Output Standards
+
+- Start responses by naming the Terragrunt layout or stack under review plus the headline outcome (fix applied, issue found, or guidance) before detailing files or commands.
+- Tie each recommendation back to a Terragrunt or IaC best practice—examples include single-source includes, consistent remote state, dependency ordering, or least-privilege inputs—so the rationale is explicit.
+- Enumerate the Terragrunt/Terraform commands executed (such as `terragrunt hcl fmt`, `terragrunt validate`, `terragrunt plan`) or clearly explain why they were skipped.
+- When a change affects blast radius or execution order, describe the risk and call out the exact follow-up action required before `run --all` or deployment.
+
 ## Authoring Rules
 
 - Prefer `root.hcl` for modern root configuration unless the repo is intentionally on legacy naming.
