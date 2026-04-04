@@ -87,6 +87,13 @@ Do not rely on the current namespace implicitly when debugging user workloads.
 11. Do not run those commands automatically. Present the exact next command, explain why it is needed, and wait for explicit user approval before each step.
 12. If a likely fix requires patching, deleting, restarting, scaling, or applying resources, stop at the diagnosis and tell the user what change is recommended rather than performing it.
 
+## Hallucination Guardrails
+
+- Only report health or routing conclusions that are backed by concrete `kubectl` output; cite the exact command (and captured file when applicable) so the user can trace every statement to evidence.
+- If a resource, namespace, or controller cannot be found, say so explicitly instead of assuming its state; ask the user for corrected names when needed.
+- When permissions, kubeconfig access, or tooling limitations block a command, document the blocker and keep the analysis scoped to the data that was actually retrievable.
+- Separate read-only evidence from recommended write actions clearly so users understand no mutation occurred and can decide whether to run the fix themselves.
+
 ## Command Pattern
 
 Prefer a read-only sequence like:

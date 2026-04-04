@@ -51,6 +51,13 @@ Reuse `examples/minimal-web-app/` when the user wants a clean starter chart with
 7. If the chart renders CRDs or third-party APIs, look up the exact upstream documentation before changing templates.
 8. After editing, run the strongest local Helm and manifest validation available.
 
+## Hallucination Guardrails
+
+- Open and quote the actual chart files (`Chart.yaml`, `values.yaml`, `templates/<file>`) before describing changes so every recommendation is anchored to evidence instead of assumptions.
+- When referencing Kubernetes resources or Helm helpers, double-check the API version and function signature from official docs to avoid inventing fields or behavior.
+- If a value, helper, or manifest is missing, state that absence plainly and explain whether you are proposing to add it rather than speaking as if it already exists.
+- When `helm lint`, `helm template`, or cluster-side validation cannot run, document the limitation and keep findings scoped to static review rather than implying manifests were validated.
+
 ## Output Standards
 
 - Lead with the current chart status (what changed or what was reviewed) before diving into file-by-file commentary so users get the headline immediately.

@@ -34,11 +34,18 @@ Use this skill when the user is working on Terragrunt layouts, `root.hcl`, `terr
 7. After editing, run HCL formatting and Terragrunt validation commands when available.
 8. Ensure Terraform inputs include a consistent labeling contract for downstream resources.
 9. If labels or tags are not defined by the user, ask for them or default to:
-   - `project`
-   - `environment`
-   - `owner`
-   - `managed_by`
-   - `cost_center` when relevant
+    - `project`
+    - `environment`
+    - `owner`
+    - `managed_by`
+    - `cost_center` when relevant
+
+## Hallucination Guardrails
+
+- Resolve every `include`, `find_in_parent_folders`, and `dependency` path inside the repo before referencing it so guidance reflects the real directory tree rather than an assumed structure.
+- Quote the actual locals, inputs, and remote state settings you inspected; never assume shared conventions exist if they are not present in files.
+- When remote state config, mock outputs, or dependencies are missing, state that fact explicitly and outline the work required instead of implying they already exist.
+- Document the Terragrunt/Terraform commands you successfully ran and explain any skips due to missing credentials, tooling, or time so users know when feedback comes from static review only.
 
 ## Output Standards
 

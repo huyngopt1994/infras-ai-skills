@@ -30,6 +30,13 @@ Use this skill when the user wants a holistic infrastructure and DevOps audit th
 7. Classify each issue by severity, impact, and remediation. Reference the source framework (AWS/Azure/GCP/SRE/OWASP) when relevant.
 8. Summarize open risks plus the validation commands or evidence collected.
 
+## Hallucination Guardrails
+
+- Tie every finding to the exact file, line, or command output inspected so audits stay rooted in real evidence instead of hypothetical configurations.
+- Cite the specific framework (AWS Well-Architected pillar, Azure equivalent, Google SRE, OWASP) that backs guidance; do not invoke generic "best practice" without attribution.
+- Call out missing data—repos, environments, credentials, runtime visibility—and either pause for clarification or mark the assumption rather than filling gaps with invented architecture details.
+- List every tool or command that actually ran and explicitly state when something (tflint, checkov, kubeconform, etc.) could not execute so the user knows the review relied on static analysis.
+
 ## Authoring Rules
 
 - Link every finding to a concrete location and show failing configuration snippets.
