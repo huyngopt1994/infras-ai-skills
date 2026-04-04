@@ -37,11 +37,18 @@ Use this skill when the user is working on Terraform modules, stacks, providers,
 8. After editing, run the strongest local validation available.
 9. Always include labels or tags for managed resources when the provider supports them.
 10. If the user did not specify a label/tag contract, ask for one or apply a sensible default set such as:
-    - `project`
-    - `environment`
-    - `owner`
-    - `managed_by`
-    - `cost_center` when relevant
+     - `project`
+     - `environment`
+     - `owner`
+     - `managed_by`
+     - `cost_center` when relevant
+
+## Hallucination Guardrails
+
+- Inspect the actual modules, variables, and resource blocks before describing behavior; cite specific files or resource addresses so every claim can be traced back to code.
+- When unsure about provider arguments or module outputs, look up the official documentation and mention the version consulted instead of guessing attribute names or defaults.
+- Document every `terraform fmt/init/validate/plan` or lint command that actually ran; if a command is skipped because of missing credentials, state the blocker rather than implying success.
+- When state, backend, or environment details are unknown, record the assumption and request clarification instead of inventing surrounding infrastructure or IAM behavior.
 
 ## Authoring Rules
 

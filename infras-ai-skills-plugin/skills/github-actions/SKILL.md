@@ -50,6 +50,13 @@ Use this skill when the user is working on `.github/workflows/*.yml`, reusable w
 9. Keep secrets out of untrusted execution paths, especially fork-triggered pull requests.
 10. After editing, run the strongest local lint or validation available.
 
+## Hallucination Guardrails
+
+- Inspect the exact workflow files before referencing job names, triggers, or secrets so guidance points to real YAML paths instead of imagined pipelines.
+- When introducing or recommending third-party actions, confirm their repository and version, reference official docs, and mention explicitly that they are new dependencies.
+- List every validation or lint command that actually ran; if `actionlint`, `yamllint`, or `act` cannot execute, explain the blocker instead of implying success.
+- When workflow behavior depends on org secrets, self-hosted runners, or environments you cannot observe, state the uncertainty and ask the user for confirmation rather than assuming they exist.
+
 ## Authoring Rules
 
 - Prefer workflow-level `permissions: read-all` or explicit minimal scopes over broad write defaults.

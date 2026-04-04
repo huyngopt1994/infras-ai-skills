@@ -37,6 +37,13 @@ Use this skill when the user is working on repository governance and collaborati
 8. After editing, verify that file locations match GitHub's expected discovery paths.
 9. During code reviews, if a pull request lacks an associated ticket or clearly described impact, leave an informational comment flagging the gap and avoid issuing Approve or Request Changes—final review state stays with a human maintainer.
 
+## Hallucination Guardrails
+
+- Ground every governance recommendation in concrete repo evidence: cite the exact path and, when possible, the lines you inspected so it is clear you are not describing imagined templates.
+- When a required artifact (CODEOWNERS, templates, CONTRIBUTING, release config) is missing, say so explicitly and either scaffold it or ask for requirements—never assume it already exists.
+- Call out GitHub UI settings (branch protection, rulesets, repo-level approvals) as manual follow-up instead of implying they changed inside the codebase.
+- If stakeholder processes or ticket flows are unclear, document the assumption and request clarification instead of inventing Jira policies or approval chains.
+
 ## Output Standards
 
 - Keep every review structured with explicit **Good News** and **Bad News** callouts so maintainers get balanced signal on strengths and gaps.
