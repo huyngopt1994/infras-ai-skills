@@ -81,6 +81,10 @@ install_skill "helm"
 install_skill "k8s-doctor"
 install_skill "github-actions"
 install_skill "github"
+install_skill "infra-auditor"
+install_skill "infra-thinking"
+install_skill "infra-design"
+install_skill "infra-research"
 
 echo
 echo "Install complete: ${TARGET_DIR}"
