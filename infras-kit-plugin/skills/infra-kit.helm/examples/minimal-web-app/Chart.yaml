@@ -1,0 +1,6 @@
+apiVersion: v2
+name: minimal-web-app
+description: Minimal web app chart baseline for the helm skill.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

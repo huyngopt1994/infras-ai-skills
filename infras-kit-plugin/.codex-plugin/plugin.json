@@ -1,0 +1,44 @@
+{
+  "name": "infras-kit",
+  "version": "0.3.0",
+  "description": "Infrastructure ticket-to-plan-to-implementation workflow and skill pack for Codex, Claude Code, and OpenCode.",
+  "author": {
+    "name": "Huy Ngo",
+    "url": "https://github.com/huyngo"
+  },
+  "homepage": "https://github.com/huyngopt1994/infras-kit",
+  "repository": "https://github.com/huyngopt1994/infras-kit.git",
+  "license": "UNLICENSED",
+    "keywords": [
+      "infrastructure",
+      "helm",
+      "kubernetes",
+      "ci-cd",
+      "github",
+      "iac",
+      "codex"
+    ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Infras Kit",
+    "shortDescription": "Infra ticket-to-plan-to-implementation framework plus domain skills.",
+    "longDescription": "A lightweight infrastructure delivery framework (ticket -> spec -> plan -> tasks -> implementation notes) plus opinionated domain skills for IaC (Terraform+Terragrunt), Helm, Kubernetes troubleshooting, CI/CD hardening, repo hygiene, and audits.",
+    "developerName": "Huy Ngo",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/huyngopt1994/infras-kit",
+    "defaultPrompt": [
+      "Use infra-kit.iac to scaffold a reusable module and/or Terragrunt layout.",
+      "Use infra-kit.iac to review this IaC directory for risky issues and destructive change risk.",
+      "Use helm to scaffold or review a Kubernetes chart with safer defaults.",
+      "Use k8s-doctor to trace a workload issue from Pod to Service to route using read-only checks first.",
+      "Use infra-kit.iac to design a multi-environment layout with safe remote state conventions.",
+      "Use infra-kit.github to review this CI workflow for permission and fork-safety issues.",
+      "Use infra-kit.github to standardize repository ownership and delivery guidance.",
+      "Use infra-kit to drive a ticket into spec/plan/tasks, then use the domain skills to implement safely."
+    ]
+  }
+}

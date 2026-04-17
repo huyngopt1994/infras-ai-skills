@@ -1,0 +1,8 @@
+{
+  "name": "infras-kit",
+  "description": "Infrastructure ticket-to-plan-to-implementation workflow and skill pack for Claude Code.",
+  "version": "0.3.0",
+  "author": {
+    "name": "Huy Ngo"
+  }
+}
