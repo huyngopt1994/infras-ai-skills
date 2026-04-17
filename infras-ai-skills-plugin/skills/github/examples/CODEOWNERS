@@ -1,8 +1,0 @@
-# Global default reviewers
-*       @platform-team
-
-# Infrastructure ownership
-/infras-ai-skills-plugin/ @platform-team
-
-# Documentation ownership
-/README.md @platform-team

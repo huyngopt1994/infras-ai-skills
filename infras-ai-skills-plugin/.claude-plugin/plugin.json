@@ -1,8 +1,0 @@
-{
-  "name": "infras-ai-skills",
-  "description": "Infrastructure, IaC, and CI/CD skills for Claude Code.",
-  "version": "0.3.0",
-  "author": {
-    "name": "Huy Ngo"
-  }
-}
