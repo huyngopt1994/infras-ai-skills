@@ -1,28 +1,92 @@
-# Infras AI Skills
+<div align="center">
+  <h1>Infras Kit</h1>
+  <h3><em>Turn infrastructure tickets into shippable plans and safe implementations.</em></h3>
+</div>
 
-Infrastructure, IaC, and CI/CD skills packaged for:
+Infrastructure delivery framework and skill pack for:
 
 - Codex
 - Claude Code
 - OpenCode
 
-This repo is built to capture practical infrastructure engineering guidance from real delivery experience and established industry best practices. The goal is not just to generate files faster, but to raise the quality bar for infrastructure components and delivery pipelines so they are more secure, maintainable, DRY, and production-ready.
+Infras Kit focuses on infrastructure work where the repeatable artifacts are a lightweight `spec.md` + `plan.md` + `tasks.md`, plus rollout/rollback, verification evidence, and a Confluence/Jira-ready update.
 
-The operating model is simple:
+## Table of Contents
 
-- skills should be installable in small, reusable units
-- repeated validation should become scripts, not just prose
-- each shipped skill should have an example or another concrete reuse path when the domain has a stable baseline
+- [Table of Contents](#table-of-contents)
+- [What Is Infras Kit?](#what-is-infras-kit)
+- [Get Started](#get-started)
+- [Default Problem-Solving Flow](#default-problem-solving-flow)
+- [Development Phases](#development-phases)
+- [Skill Catalog](#skill-catalog)
+  - [Operational Notes](#operational-notes)
+- [What Changed](#what-changed)
+- [Purpose](#purpose)
+- [Repo Layout](#repo-layout)
+- [Install](#install)
+  - [Quick Install (recommended)](#quick-install-recommended)
+  - [Manual Symlink Install](#manual-symlink-install)
+  - [Copy-Only Environments](#copy-only-environments)
+  - [Updating \& Syncing](#updating--syncing)
+- [Using The Skills](#using-the-skills)
+- [Bundled Helpers](#bundled-helpers)
+- [Quality Bar](#quality-bar)
+- [Current Scope](#current-scope)
+- [Future Deliverables](#future-deliverables)
 
-This repo currently ships seven skills:
+## What Is Infras Kit?
 
-- `terraform`: generate, review, validate, and harden Terraform modules and stacks
-- `terragrunt`: scaffold, review, validate, and troubleshoot Terragrunt layouts and dependency wiring
-- `helm`: scaffold, review, validate, and harden Helm charts, values, templates, and Kubernetes workload defaults
-- `k8s-doctor`: troubleshoot Kubernetes runtime, Service, endpoint, ingress, and route issues with read-only-first investigation flows
-- `github-actions`: create, review, and troubleshoot CI/CD workflows on GitHub Actions, with stronger defaults around least-privilege permissions, fork safety, and reusable workflow patterns
-- `github`: standardize repository collaboration files such as `CODEOWNERS`, pull request templates, contributor guidance, and branch protection recommendations that support delivery quality
-- `infra-auditor`: perform Infrastructure Review & DevOps Auditor checks that tie IaC, CI/CD, reliability, and application-security controls back to AWS/Azure/GCP well-architected pillars and the OWASP Top 10.
+Infras Kit is a centralized, consistent way to solve infra problems end-to-end:
+
+- intake a ticket
+- write a spec and plan with rollout/rollback and verification
+- break it into executable tasks
+- implement with domain skills (IaC, Helm, GitHub Actions, repo hygiene)
+- audit cross-cutting risks before merge/release
+
+## Get Started
+
+1. Install the skills (see [Install](#install)).
+2. Create a work item:
+
+```bash
+bash infras-kit-plugin/skills/infra-kit/scripts/new-work-item.sh "Reduce NAT Gateway spend" \
+  --id "INFRA-1234" \
+  --link "https://jira.example.com/browse/INFRA-1234"
+```
+
+3. Fill in `docs/infras-kit/work-items/<nnn>-.../ticket.md`, then drive `spec.md` -> `plan.md` -> `tasks.md`.
+4. Implement tasks using the domain skill that matches the files you are changing.
+
+## Default Problem-Solving Flow
+
+The canonical flow is documented in `docs/infras-kit/flow.md`.
+
+## Development Phases
+
+Use the skill namespace `infra-kit.*`: everything is under `infra-kit.*`.
+
+1. Intake + artifacts: `infra-kit`
+2. Clarify + hypotheses: `infra-kit.thinking`
+3. Research (version-dependent): `infra-kit.research`
+4. Design (rollout/rollback/ownership): `infra-kit.design`
+5. Implement IaC: `infra-kit.iac`
+6. Implement charts/manifests: `infra-kit.helm`
+7. Debug k8s (read-only-first): `infra-kit.k8s-doctor`
+8. Repo + Actions changes: `infra-kit.github`
+9. Pre-merge/release audit: `infra-kit.audit`
+
+## Skill Catalog
+
+- `infra-kit`: ticket -> spec -> plan -> tasks -> implementation notes (includes Confluence-ready update template)
+- `infra-kit.thinking`: incident triage and decision hygiene when the ticket is ambiguous
+- `infra-kit.research`: cited, version-aware research briefs plus a validation plan
+- `infra-kit.design`: requirements-first infra design with explicit rollout/rollback and ownership
+- `infra-kit.iac`: Terraform + Terragrunt authoring/review/validation
+- `infra-kit.helm`: Helm chart authoring/review/validation
+- `infra-kit.k8s-doctor`: read-only Kubernetes debugging flows (Pod -> Service -> routing)
+- `infra-kit.github`: repo governance and workflow hardening (Actions)
+- `infra-kit.audit`: cross-cutting audit (least privilege, release safety, OWASP exposure)
 
 ### Operational Notes
 
@@ -44,14 +108,13 @@ The current skills explicitly push a few themes instead of leaving them implicit
 
 In practice that means:
 
-- `github-actions` now calls out minimal `GITHUB_TOKEN` permissions, safer secret handling, immutable action references for higher-risk workflows, OIDC preference, and review checks for unsafe `pull_request_target` usage
-- `github-actions` also now steers repeated CI/CD logic toward reusable workflows or composite actions instead of copy-pasting setup, permissions, and cache blocks
-- `github` now emphasizes explicit ownership for CI, release, infra, and policy paths, plus stronger merge-control guidance for higher-risk repositories
-- `github` also now pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
-- `terraform` and `terragrunt` continue to focus on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
-- `helm` now emphasizes reusable helpers, stable selectors, standard labels, deliberate requests and limits, probes, and safer workload chart defaults
-- `k8s-doctor` now emphasizes read-only-first cluster investigation, explicit `-n <namespace>` usage, and bottom-up traffic tracing from Pod to Service to EndpointSlice to HTTPRoute or Ingress
-- `infra-auditor` now provides end-to-end infrastructure and DevOps audits that cite AWS/Azure/GCP well-architected pillars, Google SRE practices, and OWASP Top 10 exposure when delivering findings
+- `infra-kit.github` covers both repo hygiene and Actions hardening: minimal `GITHUB_TOKEN` permissions, fork safety, safer secret handling, and reusable workflows/composite actions to reduce drift
+- `infra-kit.github` emphasizes explicit ownership for CI, release, infra, and policy paths, plus stronger merge-control guidance for higher-risk repositories
+- `infra-kit.github` pushes contributor-doc DRYness by centralizing shared process in `CONTRIBUTING.md` and keeping templates short and purpose-specific
+- `infra-kit.iac` focuses on reusable module contracts, dependency wiring, safer environment structure, and readable input/output boundaries
+- `infra-kit.helm` emphasizes reusable helpers, stable selectors, standard labels, deliberate requests and limits, probes, and safer workload chart defaults
+- `infra-kit.k8s-doctor` emphasizes read-only-first cluster investigation, explicit `-n <namespace>` usage, and bottom-up traffic tracing from Pod to Service to EndpointSlice to HTTPRoute or Ingress
+- `infra-kit.audit` provides end-to-end infrastructure and DevOps audits that cite AWS/Azure/GCP well-architected pillars, Google SRE practices, and OWASP Top 10 exposure when delivering findings
 
 The repo also now standardizes a lightweight contribution contract: each shipped skill should have a clear trigger, a reusable example when applicable, and a validation path when deterministic local checks are realistic.
 
@@ -63,7 +126,7 @@ Across the full skill pack, the goal is consistent:
 
 ## Purpose
 
-The intended long-term scope of this repo is broader than the current seven skills. It is meant to become a focused infrastructure skills pack covering areas such as:
+The intended long-term scope is broader than the current set of skills. It is meant to become a focused infrastructure kit covering areas such as:
 
 - IaC
 - Helm
@@ -80,49 +143,52 @@ The common standard across all of them is the same:
 
 The structure intentionally supports two installation styles:
 
-- direct skill discovery from `infras-ai-skills-plugin/skills/` for Codex and OpenCode
-- plugin-style installation from `infras-ai-skills-plugin/` for Claude Code and Codex desktop plugin flows
+- direct skill discovery from `infras-kit-plugin/skills/` for Codex and OpenCode
+- plugin-style installation from `infras-kit-plugin/` for Claude Code and Codex desktop plugin flows
 
 ## Repo Layout
 
 ```text
 .
 ├── README.md
+├── docs/
 ├── scripts/
-└── infras-ai-skills-plugin/
+└── infras-kit-plugin/
     ├── .claude-plugin/plugin.json
     ├── .codex-plugin/plugin.json
     └── skills/
-        ├── terraform/SKILL.md
-        ├── terragrunt/SKILL.md
-        ├── helm/SKILL.md
-        ├── k8s-doctor/SKILL.md
-        ├── github-actions/SKILL.md
-        ├── github/SKILL.md
-        └── infra-auditor/SKILL.md
+        ├── infra-kit/SKILL.md
+        ├── infra-kit.thinking/SKILL.md
+        ├── infra-kit.research/SKILL.md
+        ├── infra-kit.design/SKILL.md
+        ├── infra-kit.iac/SKILL.md
+        ├── infra-kit.helm/SKILL.md
+        ├── infra-kit.k8s-doctor/SKILL.md
+        ├── infra-kit.github/SKILL.md
+        └── infra-kit.audit/SKILL.md
 ```
 
 ## Install
 
 ### Quick Install (recommended)
 
-1. Clone the repo where you keep tooling: `git clone https://github.com/<your-org>/infras-ai-skills.git ~/workspace/infras-ai-skills && cd ~/workspace/infras-ai-skills`.
+1. Clone the repo where you keep tooling: `git clone https://github.com/<your-org>/infras-kit.git ~/workspace/infras-kit && cd ~/workspace/infras-kit`.
 2. Run the helper script:
 
    ```bash
-   bash scripts/install-opencode-skills.sh --global      # symlinks under ~/.agents/skills and ~/.config/opencode/skills
+   bash scripts/install-opencode-skills.sh --global      # symlinks under ~/.config/opencode/skills
    # or
    bash scripts/install-opencode-skills.sh --project .   # writes .opencode/skills inside the repo
    ```
 
-3. Enable the plugin/skill pack in Codex, Claude, or OpenCode using their standard local-plugin entry and point it at `infras-ai-skills-plugin/`.
+3. Enable the plugin/skill pack in Codex, Claude, or OpenCode using their standard local-plugin entry and point it at `infras-kit-plugin/`.
 
 ### Manual Symlink Install
 
 ```bash
-SKILL_ROOT="$(pwd)/infras-ai-skills-plugin/skills"
+SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 mkdir -p ~/.agents/skills ~/.config/opencode/skills
-for skill in terraform terragrunt helm k8s-doctor github-actions github infra-auditor; do
+for skill in infra-kit infra-kit.thinking infra-kit.research infra-kit.design infra-kit.iac infra-kit.helm infra-kit.k8s-doctor infra-kit.github infra-kit.audit; do
   ln -sf "$SKILL_ROOT/$skill" ~/.agents/skills/$skill
   ln -sf "$SKILL_ROOT/$skill" ~/.config/opencode/skills/$skill
 done
@@ -135,10 +201,10 @@ Point other agents (Claude, desktop plugins, etc.) at the same directories if th
 Some managed laptops block symlinks. After pulling the repo, copy the folders instead:
 
 ```bash
-SKILL_ROOT="$(pwd)/infras-ai-skills-plugin/skills"
+SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 DEST=~/.config/opencode/skills
 mkdir -p "$DEST"
-for skill in terraform terragrunt helm k8s-doctor github-actions github infra-auditor; do
+for skill in infra-kit infra-kit.thinking infra-kit.research infra-kit.design infra-kit.iac infra-kit.helm infra-kit.k8s-doctor infra-kit.github infra-kit.audit; do
   rm -rf "$DEST/$skill"
   cp -R "$SKILL_ROOT/$skill" "$DEST/$skill"
 done
@@ -154,39 +220,36 @@ Use `--project .` with the install script when you want the skills stored inside
 
 ## Using The Skills
 
-- Mention the skill name in your prompt (`Use terraform …`, `Use infra-auditor …`).
+- Mention the skill name in your prompt (`Use infra-kit.iac …`, `Use infra-kit.audit …`).
 - Always include scope (path, cloud/provider, environment, action like "review" vs. "generate").
 - Keep validation steps explicit when you want the skill to run a script or command.
 
 Sample prompts:
 
-- `Use terraform to review ./infra/live/prod for destructive change risk.`
-- `Use terragrunt to build a dev/stage/prod layout with a shared root.hcl.`
-- `Use helm to refactor ./charts/web with shared helpers and safer defaults.`
-- `Use k8s-doctor to trace a 503 from ingress to Pod in namespace payments.`
-- `Use github-actions to harden ./.github/workflows/release.yml with minimal permissions and concurrency.`
-- `Use github to add CODEOWNERS plus a concise PR template.`
-- `Use infra-auditor to audit ./infra and ./.github/workflows for least-privilege IAM, release safety, and OWASP Top 10 exposure before compliance review.`
+- `Use infra-kit.iac to review ./infra/live/prod for destructive change risk.`
+- `Use infra-kit.iac to design a dev/stage/prod layout with a shared root.hcl.`
+- `Use infra-kit.helm to refactor ./charts/web with shared helpers and safer defaults.`
+- `Use infra-kit.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.`
+- `Use infra-kit.github to harden ./.github/workflows/release.yml with minimal permissions and concurrency.`
+- `Use infra-kit.github to add CODEOWNERS plus a concise PR template.`
+- `Use infra-kit.audit to audit ./infra and ./.github/workflows for least-privilege IAM, release safety, and OWASP Top 10 exposure before compliance review.`
+- `Use infra-kit to turn this Jira ticket into spec/plan/tasks under docs/infras-kit/work-items/.`
 
 If your organization mandates specific labels or metadata, add that to the prompt (for example, "include labels project, environment, owner, cost_center" when generating IaC).
 
 ## Bundled Helpers
 
-OpenCode, Codex, or Claude can also reuse the bundled scripts and examples:
-
 - installer: `scripts/install-opencode-skills.sh`
-- Terraform validator helper: `infras-ai-skills-plugin/skills/terraform/scripts/validate_terraform.sh`
-- Terragrunt validator helper: `infras-ai-skills-plugin/skills/terragrunt/scripts/validate_terragrunt.sh`
-- Helm validator helper: `infras-ai-skills-plugin/skills/helm/scripts/validate_helm.sh`
-- Helm skill: `infras-ai-skills-plugin/skills/helm/SKILL.md`
-- Kubernetes debug skill: `infras-ai-skills-plugin/skills/k8s-doctor/SKILL.md`
-- Kubernetes debug helper: `infras-ai-skills-plugin/skills/k8s-doctor/scripts/collect_pod_debug.sh`
-- Helm example baseline: `infras-ai-skills-plugin/skills/helm/examples/minimal-web-app/`
-- Terraform example baseline: `infras-ai-skills-plugin/skills/terraform/examples/minimal-module/`
-- Terragrunt example baseline: `infras-ai-skills-plugin/skills/terragrunt/examples/live-aws/`, including a simple `app -> vpc` dependency example with `mock_outputs` for validation
-- GitHub Actions example baseline: `infras-ai-skills-plugin/skills/github-actions/examples/basic-ci.yml`
-- GitHub repository examples: `infras-ai-skills-plugin/skills/github/examples/`
-- Infrastructure audit skill: `infras-ai-skills-plugin/skills/infra-auditor/SKILL.md`
+- work-item scaffold: `infras-kit-plugin/skills/infra-kit/scripts/new-work-item.sh`
+- IaC validator helper: `infras-kit-plugin/skills/infra-kit.iac/scripts/validate_iac.sh`
+- Helm validator helper: `infras-kit-plugin/skills/infra-kit.helm/scripts/validate_helm.sh`
+- Helm skill: `infras-kit-plugin/skills/infra-kit.helm/SKILL.md`
+- Kubernetes debug skill: `infras-kit-plugin/skills/infra-kit.k8s-doctor/SKILL.md`
+- Kubernetes debug helper: `infras-kit-plugin/skills/infra-kit.k8s-doctor/scripts/collect_pod_debug.sh`
+- Helm example baseline: `infras-kit-plugin/skills/infra-kit.helm/examples/minimal-web-app/`
+- GitHub Actions example baseline: `infras-kit-plugin/skills/infra-kit.github/examples/github-actions/basic-ci.yml`
+- GitHub repository examples: `infras-kit-plugin/skills/infra-kit.github/examples/`
+- Infrastructure audit skill: `infras-kit-plugin/skills/infra-kit.audit/SKILL.md`
 
 See `CONTRIBUTING.md` for the minimum bar for adding or evolving skills in this repo.
 
@@ -204,11 +267,11 @@ If you use these skills, the expected default posture is:
 - keep Kubernetes troubleshooting read-only first, explicit about namespace scope, and evidence-driven from Pod to route
 - keep repository ownership clear for CI, release, infrastructure, and policy files
 - keep contributor process documented once, then referenced from templates instead of copied everywhere
-- tie infrastructure and application-security findings to OWASP Top 10 categories and cloud well-architected pillars when running infra-auditor reviews
+- tie infrastructure and application-security findings to OWASP Top 10 categories and cloud well-architected pillars when running infra-kit.audit reviews
 
 ## Current Scope
 
-This is still a focused skill pack. The current shipped scope is Terraform, Terragrunt, Helm, Kubernetes debugging, GitHub Actions, GitHub repository hygiene, and Infrastructure Review & DevOps auditing. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
+This is still a focused kit. The current shipped scope is IaC (Terraform+Terragrunt), Helm, Kubernetes debugging, GitHub repo + Actions, and Infrastructure Review & DevOps auditing. The intended direction is broader infrastructure coverage, especially deeper Kubernetes and more general CI/CD skills, without changing the packaging model.
 
 ## Future Deliverables
 

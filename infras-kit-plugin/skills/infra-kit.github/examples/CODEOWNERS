@@ -1,0 +1,8 @@
+# Global default reviewers
+*       @platform-team
+
+# Infrastructure ownership
+/infras-kit-plugin/ @platform-team
+
+# Documentation ownership
+/README.md @platform-team

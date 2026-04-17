@@ -55,7 +55,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SOURCE_DIR="${REPO_ROOT}/infras-ai-skills-plugin/skills"
+SOURCE_DIR="${REPO_ROOT}/infras-kit-plugin/skills"
 
 mkdir -p "${TARGET_DIR}"
 
@@ -75,16 +75,15 @@ install_skill() {
   fi
 }
 
-install_skill "terraform"
-install_skill "terragrunt"
-install_skill "helm"
-install_skill "k8s-doctor"
-install_skill "github-actions"
-install_skill "github"
-install_skill "infra-auditor"
-install_skill "infra-thinking"
-install_skill "infra-design"
-install_skill "infra-research"
+install_skill "infra-kit"
+install_skill "infra-kit.thinking"
+install_skill "infra-kit.research"
+install_skill "infra-kit.design"
+install_skill "infra-kit.iac"
+install_skill "infra-kit.helm"
+install_skill "infra-kit.k8s-doctor"
+install_skill "infra-kit.github"
+install_skill "infra-kit.audit"
 
 echo
 echo "Install complete: ${TARGET_DIR}"
