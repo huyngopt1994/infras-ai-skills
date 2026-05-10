@@ -90,7 +90,7 @@ Enable the plugin/skill pack in Codex, Claude, or OpenCode using their standard 
 ```bash
 SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 mkdir -p ~/.agents/skills ~/.config/opencode/skills
-for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
+for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.workflow.verify infra-kit.workflow.review infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
   ln -sf "$SKILL_ROOT/$skill" ~/.agents/skills/$skill
   ln -sf "$SKILL_ROOT/$skill" ~/.config/opencode/skills/$skill
 done
@@ -104,7 +104,7 @@ Some managed laptops block symlinks. After pulling the repo, copy the folders in
 SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 DEST=~/.config/opencode/skills
 mkdir -p "$DEST"
-for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
+for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.workflow.verify infra-kit.workflow.review infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
   rm -rf "$DEST/$skill"
   cp -R "$SKILL_ROOT/$skill" "$DEST/$skill"
 done
@@ -125,6 +125,8 @@ bash infras-kit-plugin/skills/infra-kit.workflow/scripts/new-work-item.sh "Reduc
 
 2. Fill in `docs/infras-kit/work-items/<nnn>-.../ticket.md`, then drive `spec.md` -> `plan.md` -> `tasks.md`.
 3. Implement tasks using the domain skill that matches the files you are changing.
+4. Run `infra-kit.workflow.verify` to map acceptance criteria to checks and record evidence.
+5. Use `infra-kit.workflow.review` to prepare a reviewable PR and respond to feedback.
 
 Sample prompts:
 
@@ -133,6 +135,8 @@ Use infra-kit.domain.iac to review ./infra/live/prod for destructive change risk
 Use infra-kit.domain.helm to refactor ./charts/web with shared helpers and safer defaults.
 Use infra-kit.domain.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.
 Use infra-kit.domain.github to harden ./.github/workflows/release.yml with minimal permissions.
+Use infra-kit.workflow.verify to produce a verification matrix for INFRA-1234 and paste evidence into implementation-notes.md.
+Use infra-kit.workflow.review to produce a PR body from the work item and confirm rollback + verification are clear.
 Use infra-kit.workflow.audit to audit ./infra and ./.github/workflows for least-privilege and release safety.
 ```
 
@@ -145,6 +149,8 @@ Use infra-kit.workflow.audit to audit ./infra and ./.github/workflows for least-
 - `infra-kit.workflow.thinking`: structured problem solving and decision hygiene
 - `infra-kit.workflow.research`: version-aware, source-backed research briefs with a validation plan
 - `infra-kit.workflow.design`: requirements-first infrastructure design with rollout/rollback and ownership
+- `infra-kit.workflow.verify`: definition-of-done verification gate and evidence capture
+- `infra-kit.workflow.review`: PR readiness checklist and review-feedback loop hygiene
 - `infra-kit.domain.iac`: Terraform + Terragrunt authoring/review/validation
 - `infra-kit.domain.helm`: Helm chart authoring/review/validation
 - `infra-kit.domain.k8s-doctor`: read-only-first Kubernetes debugging (Pod -> Service -> routing)
@@ -170,6 +176,8 @@ Use infra-kit.workflow.audit to audit ./infra and ./.github/workflows for least-
         ├── infra-kit.workflow.thinking/SKILL.md
         ├── infra-kit.workflow.research/SKILL.md
         ├── infra-kit.workflow.design/SKILL.md
+        ├── infra-kit.workflow.verify/SKILL.md
+        ├── infra-kit.workflow.review/SKILL.md
         ├── infra-kit.domain.iac/SKILL.md
         ├── infra-kit.domain.helm/SKILL.md
         ├── infra-kit.domain.k8s-doctor/SKILL.md
