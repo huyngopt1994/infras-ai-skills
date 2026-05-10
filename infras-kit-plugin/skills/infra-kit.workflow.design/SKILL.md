@@ -1,5 +1,5 @@
 ---
-name: infra-kit.design
+name: infra-kit.workflow.design
 description: Design infrastructure changes with explicit requirements, SLOs, security controls, rollout safety, and operational ownership.
 ---
 
@@ -7,7 +7,12 @@ description: Design infrastructure changes with explicit requirements, SLOs, sec
 
 Use this skill when the user is designing or significantly changing infrastructure: new platform components, migrations, networking changes, CI/CD delivery patterns, data stores, clusters, or cross-cutting guardrails.
 
-The goal is a design that is safe to ship and easy to operate, not a diagram.
+The goal is a design that is safe to ship and easy to operate.
+
+This skill always produces two diagrams (Mermaid preferred):
+
+- a **system diagram** (components and trust boundaries)
+- a **flow diagram** (request/data/control flow for the primary use-case and one failure path)
 
 ## Outcomes
 
@@ -19,13 +24,16 @@ The goal is a design that is safe to ship and easy to operate, not a diagram.
 ## Where This Fits In The Flow
 
 - Use after intake when the change is non-trivial and needs explicit rollout/rollback and ownership.
-- Use to produce the high-quality plan that becomes `infra-kit` `plan.md` and drives `tasks.md`.
+- Use to produce the high-quality plan that becomes `infra-kit.workflow` `plan.md` and drives `tasks.md`.
 
 ## Output Rules
 
 - Always write deliverables to one or more Markdown files in the repo (do not only respond in chat).
 - If the design is large, split it into multiple files and keep each file focused and skimmable.
 - Prefer a stable location such as `docs/infra-design/<topic>/`.
+ - Always include the required diagrams in the design doc:
+ - System diagram (Mermaid)
+ - Flow diagram (Mermaid)
 
 ## Workflow
 
@@ -48,15 +56,18 @@ The goal is a design that is safe to ship and easy to operate, not a diagram.
    - operational complexity (runbooks, incident response)
    - cost and capacity model
    - delivery risk (how hard to roll out/rollback)
-7. Do a pre-mortem:
+7. Create the diagrams:
+   - System diagram: components, dependencies, network boundaries, identities, data stores
+   - Flow diagram: primary happy path plus at least one failure/retry/degraded path
+8. Do a pre-mortem:
    - if this design fails in prod, what failed and why
    - list mitigations and detection signals
-8. Write the plan to ship:
+9. Write the plan to ship:
    - staged rollout
    - verification steps
    - rollback criteria and steps
    - deprecation plan for old paths
-9. Close with open questions and the smallest next experiment that reduces uncertainty.
+10. Close with open questions and the smallest next experiment that reduces uncertainty.
 
 ## Hallucination Guardrails
 
@@ -73,5 +84,7 @@ The goal is a design that is safe to ship and easy to operate, not a diagram.
 - Data: backups, restore tests, retention, encryption, access patterns
 - Change safety: canary/blue-green, feature flags, config rollout, rollback path
 - Cost: steady-state cost, scaling behavior, non-prod strategy
+ - System diagram exists and matches the written design
+ - Flow diagram exists for the primary path and one failure path
 
 ## References

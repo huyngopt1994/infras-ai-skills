@@ -37,3 +37,11 @@
 ## Edge Cases
 
 -
+
+## Unknowns / Clarifications
+
+- [NEEDS CLARIFICATION: ...]
+
+## Assumptions (Only If Explicitly Spiking)
+
+- [ASSUMPTION: ...]

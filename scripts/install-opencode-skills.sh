@@ -75,15 +75,15 @@ install_skill() {
   fi
 }
 
-install_skill "infra-kit"
-install_skill "infra-kit.thinking"
-install_skill "infra-kit.research"
-install_skill "infra-kit.design"
-install_skill "infra-kit.iac"
-install_skill "infra-kit.helm"
-install_skill "infra-kit.k8s-doctor"
-install_skill "infra-kit.github"
-install_skill "infra-kit.audit"
+install_skill "infra-kit.workflow"
+install_skill "infra-kit.workflow.thinking"
+install_skill "infra-kit.workflow.research"
+install_skill "infra-kit.workflow.design"
+install_skill "infra-kit.domain.iac"
+install_skill "infra-kit.domain.helm"
+install_skill "infra-kit.domain.k8s-doctor"
+install_skill "infra-kit.domain.github"
+install_skill "infra-kit.workflow.audit"
 
 echo
 echo "Install complete: ${TARGET_DIR}"

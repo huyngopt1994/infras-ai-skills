@@ -1,5 +1,5 @@
 ---
-name: infra-kit.helm
+name: infra-kit.domain.helm
 description: Create, review, validate, refactor, or troubleshoot Helm charts, values.yaml files, templates, helpers, releases, and Kubernetes deployment defaults.
 ---
 
@@ -18,7 +18,7 @@ Reuse `examples/minimal-web-app/` when the user wants a clean starter chart with
 
 ## Where This Fits In The Flow
 
-- Use after `infra-kit` / `infra-kit.design` when the deliverable is a chart or a chart refactor.
+- Use after `infra-kit.workflow` / `infra-kit.workflow.design` when the deliverable is a chart or a chart refactor.
 - Use during implementation to harden defaults and validate with `helm lint` / `helm template` where possible.
 
 ## Workflow

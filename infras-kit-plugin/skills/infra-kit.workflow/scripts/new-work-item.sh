@@ -37,7 +37,7 @@ done
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/../../../.." && pwd)"
 
-templates_dir="${repo_root}/infras-kit-plugin/skills/infra-kit/templates"
+templates_dir="${repo_root}/infras-kit-plugin/skills/infra-kit.workflow/templates"
 base_dir="${repo_root}/docs/infras-kit/work-items"
 
 mkdir -p "${base_dir}"

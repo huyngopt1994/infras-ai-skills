@@ -14,26 +14,33 @@ Each subfolder is a single skill.
 
 ## Skill Catalog
 
-- `infra-kit.iac`: Terraform + Terragrunt authoring/review/validation
-- `infra-kit.helm`: scaffold/review/harden Helm charts, templates, and workload defaults
-- `infra-kit.k8s-doctor`: read-only-first Kubernetes debugging across Pods, Services, endpoints, and routing layers
-- `infra-kit.github`: GitHub repo + Actions governance (CODEOWNERS, templates, branch protection guidance, workflow hardening)
-- `infra-kit.audit`: infrastructure and DevOps audits grounded in well-architected and OWASP-style controls
-- `infra-kit.thinking`: structured problem solving and decision hygiene for infra work
-- `infra-kit.design`: requirements-first infrastructure design with rollout/rollback and operational ownership
-- `infra-kit.research`: version-aware, source-backed research briefs with a concrete validation plan
-- `infra-kit`: lightweight ticket -> spec -> plan -> tasks -> implementation notes workflow (includes Confluence-ready update template)
+This README groups skills into two buckets so it’s obvious which ones are part of the same end-to-end workflow.
+
+### Workflow Skills (prefix: `infra-kit.workflow.*`)
+
+ - `infra-kit.workflow`: ticket -> spec -> plan -> tasks -> implementation notes workflow (includes Confluence-ready update template)
+ - `infra-kit.workflow.thinking`: structured problem solving and decision hygiene for ambiguous / incident-like work
+ - `infra-kit.workflow.research`: version-aware, source-backed research briefs with a concrete validation plan
+ - `infra-kit.workflow.design`: requirements-first infrastructure design with rollout/rollback and operational ownership
+ - `infra-kit.workflow.audit`: infrastructure and DevOps audits grounded in well-architected and OWASP-style controls
+
+### Domain Skills (prefix: `infra-kit.domain.*`)
+
+ - `infra-kit.domain.iac`: Terraform + Terragrunt authoring/review/validation
+ - `infra-kit.domain.helm`: scaffold/review/harden Helm charts, templates, and workload defaults
+ - `infra-kit.domain.k8s-doctor`: read-only-first Kubernetes debugging across Pods, Services, endpoints, and routing layers
+ - `infra-kit.domain.github`: GitHub repo + Actions governance (CODEOWNERS, templates, branch protection guidance, workflow hardening)
 
 ## Recommended Flow
 
 If you want a consistent way to solve infra tickets end-to-end, use:
 
-1. `infra-kit` to create `docs/infras-kit/work-items/...` and drive `ticket.md` -> `spec.md` -> `plan.md` -> `tasks.md`.
-2. `infra-kit.thinking` when the request is ambiguous or incident-like.
-3. `infra-kit.research` when behavior is version-dependent or requires vendor docs.
-4. `infra-kit.design` for non-trivial changes that need explicit rollout/rollback.
-5. Domain skills (`infra-kit.iac`, `infra-kit.helm`, `infra-kit.github`, `infra-kit.k8s-doctor`) to execute.
-6. `infra-kit.audit` before merge/release to catch cross-cutting risks.
+1. `infra-kit.workflow` to create `docs/infras-kit/work-items/...` and drive `ticket.md` -> `spec.md` -> `plan.md` -> `tasks.md`.
+2. `infra-kit.workflow.thinking` when the request is ambiguous or incident-like.
+3. `infra-kit.workflow.research` when behavior is version-dependent or requires vendor docs.
+4. `infra-kit.workflow.design` for non-trivial changes that need explicit rollout/rollback.
+5. Domain skills (`infra-kit.domain.iac`, `infra-kit.domain.helm`, `infra-kit.domain.github`, `infra-kit.domain.k8s-doctor`) to execute.
+6. `infra-kit.workflow.audit` before merge/release to catch cross-cutting risks.
 
 For the full mapping across skills and artifacts, see `docs/infras-kit/flow.md`.
 
@@ -49,11 +56,11 @@ When invoking a skill, include:
 Examples:
 
 ```text
-Use infra-kit.thinking to triage an incident where API latency spiked after a deploy.
-Use infra-kit.design to propose a rollout plan for migrating from Ingress to Gateway API.
-Use infra-kit.research to compare AWS NLB + Ingress vs. Gateway API for our k8s version 1.29.
-Use infra-kit.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.
-Use infra-kit.github to review .github/workflows/release.yml for fork safety and token permissions.
+Use infra-kit.workflow.thinking to triage an incident where API latency spiked after a deploy.
+Use infra-kit.workflow.design to propose a rollout plan for migrating from Ingress to Gateway API.
+Use infra-kit.workflow.research to compare AWS NLB + Ingress vs. Gateway API for our k8s version 1.29.
+Use infra-kit.domain.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.
+Use infra-kit.domain.github to review .github/workflows/release.yml for fork safety and token permissions.
 ```
 
 ## Deliverable Rules (Design + Research)
@@ -72,3 +79,7 @@ For design and research work, the default output is not a long chat response.
 - Safe-by-default: reversible actions first, high-blast-radius actions require explicit approval.
 - Least privilege: IAM, tokens, and RBAC should be explicit and minimal.
 - DRY and maintainable: prefer reusable primitives over copy-paste configuration.
+
+## Commit Hygiene
+
+- Do not add/commit generated work-item or research/design docs (e.g., `docs/infras-kit/work-items/**`, `docs/infra-design/**`, `docs/infra-research/**`) unless the user explicitly asks to include them in a commit/PR.

@@ -1,5 +1,5 @@
 ---
-name: infra-kit.audit
+name: infra-kit.workflow.audit
 description: Review infrastructure-as-code, DevOps pipelines, and platform controls for security, reliability, compliance, and delivery hygiene using cloud well-architected baselines.
 ---
 
@@ -18,7 +18,7 @@ Use this skill when the user wants a holistic infrastructure and DevOps audit th
 ## Where This Fits In The Flow
 
 - Use near the end (pre-merge/release) as a cross-cutting quality gate.
-- Use earlier when you need an initial baseline audit to inform `infra-kit` `plan.md` risk/mitigation sections.
+- Use earlier when you need an initial baseline audit to inform `infra-kit.workflow` `plan.md` risk/mitigation sections.
 
 ## Workflow
 

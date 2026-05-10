@@ -35,3 +35,11 @@ Commands to run and expected outcomes:
 - On-call / escalation:
 - Runbook updates:
 - Cost notes:
+
+## Unknowns / Clarifications
+
+- [NEEDS CLARIFICATION: ...]
+
+## Assumptions (Only If Explicitly Spiking)
+
+- [ASSUMPTION: ...]

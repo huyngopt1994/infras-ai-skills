@@ -1,5 +1,5 @@
 ---
-name: infra-kit.k8s-doctor
+name: infra-kit.domain.k8s-doctor
 description: Debug Kubernetes workload, networking, routing, and rollout issues using read-only kubectl flows across pods, services, endpoints, HTTPRoute, ingress, and gateway resources.
 ---
 
@@ -47,7 +47,7 @@ Do not rely on the current namespace implicitly when debugging user workloads.
 ## Where This Fits In The Flow
 
 - Use during intake/triage when the ticket is “something is broken in k8s” and you need a read-only diagnosis.
-- Feed the findings back into `infra-kit` artifacts (`spec.md`/`plan.md`/`tasks.md`) before making changes.
+- Feed the findings back into `infra-kit.workflow` artifacts (`spec.md`/`plan.md`/`tasks.md`) before making changes.
 
 ## Workflow
 
