@@ -12,8 +12,10 @@ This repo’s skills are designed to work together as a repeatable delivery work
 6. Break down tasks: small steps, explicit skills, parallelizable where safe.
 7. Implement using the domain skill that matches the artifact being changed.
 8. Validate locally with the strongest deterministic checks available.
-9. Audit for cross-cutting risks before merge/release.
-10. Report back (Confluence/Jira comment) with plan, status, and evidence.
+9. Verify against acceptance criteria and record evidence.
+10. Audit for cross-cutting risks before merge/release.
+11. Prepare PR and run the review loop (request review, respond to feedback).
+12. Report back (Confluence/Jira comment) with plan, status, and evidence.
 
 ## Skill Mapping
 
@@ -21,6 +23,8 @@ This repo’s skills are designed to work together as a repeatable delivery work
 - `infra-kit.workflow.thinking`: best when the ticket is ambiguous, incident-like, or you need hypotheses and evidence tables.
 - `infra-kit.workflow.research`: best when the right answer depends on versions, vendor docs, quotas, or nuanced defaults.
 - `infra-kit.workflow.design`: best for migrations, networking, platform changes, and anything requiring explicit rollout/rollback.
+- `infra-kit.workflow.verify`: post-change verification gate and evidence capture mapped to acceptance criteria.
+- `infra-kit.workflow.review`: PR readiness and review-feedback loop hygiene.
 - `infra-kit.domain.iac`: implement/review Infrastructure-as-Code with Terraform and/or Terragrunt.
 - `infra-kit.domain.helm`: implement/review Helm charts and workload defaults.
 - `infra-kit.domain.k8s-doctor`: read-only debugging to isolate the broken hop in Pod -> Service -> routing.

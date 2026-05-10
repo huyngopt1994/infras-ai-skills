@@ -18,11 +18,13 @@ This README groups skills into two buckets so it’s obvious which ones are part
 
 ### Workflow Skills (prefix: `infra-kit.workflow.*`)
 
- - `infra-kit.workflow`: ticket -> spec -> plan -> tasks -> implementation notes workflow (includes Confluence-ready update template)
- - `infra-kit.workflow.thinking`: structured problem solving and decision hygiene for ambiguous / incident-like work
- - `infra-kit.workflow.research`: version-aware, source-backed research briefs with a concrete validation plan
- - `infra-kit.workflow.design`: requirements-first infrastructure design with rollout/rollback and operational ownership
- - `infra-kit.workflow.audit`: infrastructure and DevOps audits grounded in well-architected and OWASP-style controls
+  - `infra-kit.workflow`: ticket -> spec -> plan -> tasks -> implementation notes workflow (includes Confluence-ready update template)
+  - `infra-kit.workflow.thinking`: structured problem solving and decision hygiene for ambiguous / incident-like work
+  - `infra-kit.workflow.research`: version-aware, source-backed research briefs with a concrete validation plan
+  - `infra-kit.workflow.design`: requirements-first infrastructure design with rollout/rollback and operational ownership
+  - `infra-kit.workflow.verify`: definition-of-done verification gate and evidence capture mapped to acceptance criteria
+  - `infra-kit.workflow.review`: PR readiness checklist and review-feedback loop hygiene
+  - `infra-kit.workflow.audit`: infrastructure and DevOps audits grounded in well-architected and OWASP-style controls
 
 ### Domain Skills (prefix: `infra-kit.domain.*`)
 
@@ -41,6 +43,11 @@ If you want a consistent way to solve infra tickets end-to-end, use:
 4. `infra-kit.workflow.design` for non-trivial changes that need explicit rollout/rollback.
 5. Domain skills (`infra-kit.domain.iac`, `infra-kit.domain.helm`, `infra-kit.domain.github`, `infra-kit.domain.k8s-doctor`) to execute.
 6. `infra-kit.workflow.audit` before merge/release to catch cross-cutting risks.
+
+For ticket-driven SDLC, add two explicit gates:
+
+1. `infra-kit.workflow.verify` to capture verification evidence.
+2. `infra-kit.workflow.review` to prepare a reviewable PR and respond to feedback.
 
 For the full mapping across skills and artifacts, see `docs/infras-kit/flow.md`.
 

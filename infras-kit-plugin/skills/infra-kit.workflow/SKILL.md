@@ -39,6 +39,8 @@ bash infras-kit-plugin/skills/infra-kit.workflow/scripts/new-work-item.sh "<shor
 - use `infra-kit.domain.helm` for chart work
 - use `infra-kit.domain.k8s-doctor` for runtime debugging
 - use `infra-kit.domain.github` for repo and CI/CD changes
+- use `infra-kit.workflow.verify` to record verification evidence and “definition of done”
+- use `infra-kit.workflow.review` to prepare PRs and handle review feedback
 - use `infra-kit.workflow.audit` to review before merge/release
 
 Note: skill names were renamed. Use `infra-kit.workflow.*` for workflow skills and `infra-kit.domain.*` for domain skills.
@@ -69,7 +71,7 @@ This workflow is intentionally iterative. If you discover new unknowns mid-way, 
    - gate:
      - if any `[NEEDS CLARIFICATION]` remain, ask targeted questions and stop
 4. **Tasks (tasks.md)**
-   - produce a checklist with small steps
+    - produce a checklist with small steps
     - tag each task with the intended skill (e.g., `[infra-kit.domain.iac]`, `[infra-kit.domain.helm]`)
    - mark parallelizable tasks with `[P]`
    - include a short readiness check:

@@ -31,9 +31,9 @@ This skill always produces two diagrams (Mermaid preferred):
 - Always write deliverables to one or more Markdown files in the repo (do not only respond in chat).
 - If the design is large, split it into multiple files and keep each file focused and skimmable.
 - Prefer a stable location such as `docs/infra-design/<topic>/`.
- - Always include the required diagrams in the design doc:
- - System diagram (Mermaid)
- - Flow diagram (Mermaid)
+- Always include the required diagrams in the design doc:
+- System diagram (Mermaid)
+- Flow diagram (Mermaid)
 
 ## Workflow
 
@@ -84,7 +84,7 @@ This skill always produces two diagrams (Mermaid preferred):
 - Data: backups, restore tests, retention, encryption, access patterns
 - Change safety: canary/blue-green, feature flags, config rollout, rollback path
 - Cost: steady-state cost, scaling behavior, non-prod strategy
- - System diagram exists and matches the written design
- - Flow diagram exists for the primary path and one failure path
+- System diagram exists and matches the written design
+- Flow diagram exists for the primary path and one failure path
 
 ## References

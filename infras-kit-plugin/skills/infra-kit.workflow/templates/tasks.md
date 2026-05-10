@@ -6,10 +6,11 @@
 - [ ] Each acceptance criterion maps to at least one task
 - [ ] Rollout and rollback are reflected in tasks
 - [ ] Verification steps exist and are runnable in the target environment
+- [ ] Each acceptance criterion has an explicit verification check with expected observation (what would prove it worked)
 
 ## Task List
 
-- [ ] [P] <task> (skill: <infra-kit.workflow.thinking|infra-kit.workflow.design|infra-kit.domain.iac|infra-kit.domain.helm|infra-kit.domain.k8s-doctor|infra-kit.domain.github|infra-kit.workflow.audit>)
+- [ ] [P] <task> (skill: <infra-kit.workflow.thinking|infra-kit.workflow.design|infra-kit.workflow.verify|infra-kit.workflow.review|infra-kit.domain.iac|infra-kit.domain.helm|infra-kit.domain.k8s-doctor|infra-kit.domain.github|infra-kit.workflow.audit>)
 
 ## Notes
 
