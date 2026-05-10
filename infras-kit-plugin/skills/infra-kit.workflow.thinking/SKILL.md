@@ -1,5 +1,5 @@
 ---
-name: infra-kit.thinking
+name: infra-kit.workflow.thinking
 description: Apply structured thinking, bias checks, and decision frameworks to infrastructure troubleshooting, change planning, and architecture trade-offs.
 ---
 
@@ -7,7 +7,7 @@ description: Apply structured thinking, bias checks, and decision frameworks to 
 
 Use this skill when the user needs higher-quality reasoning around infrastructure work: incident triage, root-cause analysis, migration choices, risk trade-offs, or when requirements are vague and the next step is unclear.
 
-This skill is about thinking quality and decision hygiene. Pair it with domain skills (`infra-kit.k8s-doctor`, `infra-kit.iac`, `infra-kit.helm`, `infra-kit.github`, `infra-kit.audit`) once the problem is framed and the next tests/actions are explicit.
+This skill is about thinking quality and decision hygiene. Pair it with domain skills (`infra-kit.domain.k8s-doctor`, `infra-kit.domain.iac`, `infra-kit.domain.helm`, `infra-kit.domain.github`, `infra-kit.workflow.audit`) once the problem is framed and the next tests/actions are explicit.
 
 ## Output Rules
 
@@ -25,7 +25,7 @@ This skill is about thinking quality and decision hygiene. Pair it with domain s
 ## Where This Fits In The Flow
 
 - Use at the start when requirements are vague, signals conflict, or you need hypotheses and tests.
-- Use to turn the ticket into crisp inputs for `infra-kit` `spec.md` / `plan.md`.
+- Use to turn the ticket into crisp inputs for `infra-kit.workflow` `spec.md` / `plan.md`.
 
 ## Workflow
 

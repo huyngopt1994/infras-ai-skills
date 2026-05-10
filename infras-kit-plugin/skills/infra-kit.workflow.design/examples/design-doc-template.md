@@ -24,6 +24,46 @@
 
 <Short description. Link to diagrams if they exist.>
 
+## Diagrams
+
+### System Diagram
+
+```mermaid
+flowchart LR
+  %% Components, dependencies, and trust boundaries
+  %% Replace placeholders with real components.
+  User[User/Client]
+  subgraph TrustBoundary[Trust boundary]
+    App[Service / App]
+    Data[(Data store)]
+  end
+  Ext[External dependency]
+
+  User --> App
+  App --> Data
+  App --> Ext
+```
+
+### Flow Diagram
+
+```mermaid
+sequenceDiagram
+  %% Primary flow plus one failure/degraded path.
+  participant C as Client
+  participant S as Service
+  participant D as Dependency
+
+  C->>S: Request
+  S->>D: Call dependency
+  alt Success
+    D-->>S: 200 OK
+    S-->>C: 200 OK
+  else Failure (example)
+    D-->>S: 5xx / timeout
+    S-->>C: 503 + retry-after (or degraded response)
+  end
+```
+
 ## Proposed Design
 
 - Components:

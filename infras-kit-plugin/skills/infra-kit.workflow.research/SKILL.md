@@ -1,5 +1,5 @@
 ---
-name: infra-kit.research
+name: infra-kit.workflow.research
 description: Research infrastructure topics with source quality, version awareness, and actionable recommendations backed by citations.
 ---
 
@@ -24,7 +24,7 @@ The output should be a short, cited research brief plus an experiment/validation
 ## Where This Fits In The Flow
 
 - Use when the right decision depends on versions, vendor defaults, quotas, or subtle behavior.
-- Use to de-risk `infra-kit` planning by producing a cited recommendation plus a validation plan.
+- Use to de-risk `infra-kit.workflow` planning by producing a cited recommendation plus a validation plan.
 
 ## Workflow
 

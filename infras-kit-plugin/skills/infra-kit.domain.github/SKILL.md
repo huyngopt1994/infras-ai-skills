@@ -1,5 +1,5 @@
 ---
-name: infra-kit.github
+name: infra-kit.domain.github
 description: Create, review, standardize, or troubleshoot GitHub repository and CI/CD assets (CODEOWNERS, templates, branch protection guidance, and GitHub Actions workflows).
 ---
 
@@ -22,7 +22,7 @@ Use this skill when the user is working on GitHub repository hygiene and deliver
 
 ## Where This Fits In The Flow
 
-- Use after `infra-kit` when the ticket is about repo hygiene: CODEOWNERS, templates, labels, protections.
+- Use after `infra-kit.workflow` when the ticket is about repo hygiene: CODEOWNERS, templates, labels, protections.
 - Use to make ownership and merge safety explicit so infra changes are reviewable and shippable.
 
 ## Workflow

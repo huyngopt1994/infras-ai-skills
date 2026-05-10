@@ -90,7 +90,7 @@ Enable the plugin/skill pack in Codex, Claude, or OpenCode using their standard 
 ```bash
 SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 mkdir -p ~/.agents/skills ~/.config/opencode/skills
-for skill in infra-kit infra-kit.thinking infra-kit.research infra-kit.design infra-kit.iac infra-kit.helm infra-kit.k8s-doctor infra-kit.github infra-kit.audit; do
+for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
   ln -sf "$SKILL_ROOT/$skill" ~/.agents/skills/$skill
   ln -sf "$SKILL_ROOT/$skill" ~/.config/opencode/skills/$skill
 done
@@ -104,7 +104,7 @@ Some managed laptops block symlinks. After pulling the repo, copy the folders in
 SKILL_ROOT="$(pwd)/infras-kit-plugin/skills"
 DEST=~/.config/opencode/skills
 mkdir -p "$DEST"
-for skill in infra-kit infra-kit.thinking infra-kit.research infra-kit.design infra-kit.iac infra-kit.helm infra-kit.k8s-doctor infra-kit.github infra-kit.audit; do
+for skill in infra-kit.workflow infra-kit.workflow.thinking infra-kit.workflow.research infra-kit.workflow.design infra-kit.domain.iac infra-kit.domain.helm infra-kit.domain.k8s-doctor infra-kit.domain.github infra-kit.workflow.audit; do
   rm -rf "$DEST/$skill"
   cp -R "$SKILL_ROOT/$skill" "$DEST/$skill"
 done
@@ -118,7 +118,7 @@ done
 1. Scaffold a work item:
 
 ```bash
-bash infras-kit-plugin/skills/infra-kit/scripts/new-work-item.sh "Reduce NAT Gateway spend" \
+bash infras-kit-plugin/skills/infra-kit.workflow/scripts/new-work-item.sh "Reduce NAT Gateway spend" \
   --id "INFRA-1234" \
   --link "https://jira.example.com/browse/INFRA-1234"
 ```
@@ -129,11 +129,11 @@ bash infras-kit-plugin/skills/infra-kit/scripts/new-work-item.sh "Reduce NAT Gat
 Sample prompts:
 
 ```text
-Use infra-kit.iac to review ./infra/live/prod for destructive change risk.
-Use infra-kit.helm to refactor ./charts/web with shared helpers and safer defaults.
-Use infra-kit.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.
-Use infra-kit.github to harden ./.github/workflows/release.yml with minimal permissions.
-Use infra-kit.audit to audit ./infra and ./.github/workflows for least-privilege and release safety.
+Use infra-kit.domain.iac to review ./infra/live/prod for destructive change risk.
+Use infra-kit.domain.helm to refactor ./charts/web with shared helpers and safer defaults.
+Use infra-kit.domain.k8s-doctor to trace a 503 from ingress to Pod in namespace payments.
+Use infra-kit.domain.github to harden ./.github/workflows/release.yml with minimal permissions.
+Use infra-kit.workflow.audit to audit ./infra and ./.github/workflows for least-privilege and release safety.
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -141,15 +141,15 @@ Use infra-kit.audit to audit ./infra and ./.github/workflows for least-privilege
 <!-- SKILL CATALOG -->
 ## Skill Catalog
 
-- `infra-kit`: ticket -> spec -> plan -> tasks -> implementation notes (includes Confluence-ready update template)
-- `infra-kit.thinking`: structured problem solving and decision hygiene
-- `infra-kit.research`: version-aware, source-backed research briefs with a validation plan
-- `infra-kit.design`: requirements-first infrastructure design with rollout/rollback and ownership
-- `infra-kit.iac`: Terraform + Terragrunt authoring/review/validation
-- `infra-kit.helm`: Helm chart authoring/review/validation
-- `infra-kit.k8s-doctor`: read-only-first Kubernetes debugging (Pod -> Service -> routing)
-- `infra-kit.github`: repo governance and workflow hardening (Actions, CODEOWNERS, templates)
-- `infra-kit.audit`: cross-cutting audit (least privilege, release safety, OWASP exposure)
+- `infra-kit.workflow`: ticket -> spec -> plan -> tasks -> implementation notes (includes Confluence-ready update template)
+- `infra-kit.workflow.thinking`: structured problem solving and decision hygiene
+- `infra-kit.workflow.research`: version-aware, source-backed research briefs with a validation plan
+- `infra-kit.workflow.design`: requirements-first infrastructure design with rollout/rollback and ownership
+- `infra-kit.domain.iac`: Terraform + Terragrunt authoring/review/validation
+- `infra-kit.domain.helm`: Helm chart authoring/review/validation
+- `infra-kit.domain.k8s-doctor`: read-only-first Kubernetes debugging (Pod -> Service -> routing)
+- `infra-kit.domain.github`: repo governance and workflow hardening (Actions, CODEOWNERS, templates)
+- `infra-kit.workflow.audit`: cross-cutting audit (least privilege, release safety, OWASP exposure)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -166,15 +166,15 @@ Use infra-kit.audit to audit ./infra and ./.github/workflows for least-privilege
     ├── .claude-plugin/plugin.json
     ├── .codex-plugin/plugin.json
     └── skills/
-        ├── infra-kit/SKILL.md
-        ├── infra-kit.thinking/SKILL.md
-        ├── infra-kit.research/SKILL.md
-        ├── infra-kit.design/SKILL.md
-        ├── infra-kit.iac/SKILL.md
-        ├── infra-kit.helm/SKILL.md
-        ├── infra-kit.k8s-doctor/SKILL.md
-        ├── infra-kit.github/SKILL.md
-        └── infra-kit.audit/SKILL.md
+        ├── infra-kit.workflow/SKILL.md
+        ├── infra-kit.workflow.thinking/SKILL.md
+        ├── infra-kit.workflow.research/SKILL.md
+        ├── infra-kit.workflow.design/SKILL.md
+        ├── infra-kit.domain.iac/SKILL.md
+        ├── infra-kit.domain.helm/SKILL.md
+        ├── infra-kit.domain.k8s-doctor/SKILL.md
+        ├── infra-kit.domain.github/SKILL.md
+        └── infra-kit.workflow.audit/SKILL.md
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

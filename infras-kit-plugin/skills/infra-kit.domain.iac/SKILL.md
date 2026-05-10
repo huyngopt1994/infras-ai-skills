@@ -1,5 +1,5 @@
 ---
-name: infra-kit.iac
+name: infra-kit.domain.iac
 description: Create, review, validate, refactor, or troubleshoot Infrastructure-as-Code using Terraform and/or Terragrunt (modules, stacks, layouts, remote state, dependency wiring).
 ---
 
